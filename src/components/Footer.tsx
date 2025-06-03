@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import HelpCentre from './HelpCentre';
 
@@ -22,11 +21,6 @@ const Footer = () => {
             <p className="text-gray-300 max-w-md leading-relaxed">
               Helping South African businesses grow, one page at a time. Comprehensive financial management designed specifically for local entrepreneurs.
             </p>
-            <div className="space-y-1 text-sm text-gray-400 bg-white/5 backdrop-blur-sm p-4 rounded-lg border border-slate-700 shadow-lg">
-              <p><strong>Company:</strong> Morwa Moabelo (Pty) Ltd</p>
-              <p><strong>Reg No:</strong> 2018/421571/07</p>
-              <p><strong>Established:</strong> 2018, Pretoria Atteridgeville</p>
-            </div>
           </div>
 
           <div className="space-y-4 animate-fade-in delay-200">
