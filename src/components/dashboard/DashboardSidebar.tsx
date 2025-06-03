@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { 
   Settings,
   LogOut,
@@ -10,16 +11,18 @@ import {
   Users,
   Receipt,
   Wallet,
-  PieChart
+  PieChart,
+  Building2
 } from 'lucide-react';
 
 const sidebarItems = [
-  { title: 'Dashboard', active: true, icon: BarChart3 },
-  { title: 'Invoices', active: false, icon: FileText },
-  { title: 'Clients', active: false, icon: Users },
-  { title: 'Quotations', active: false, icon: Receipt },
-  { title: 'Expenses', active: false, icon: Wallet },
-  { title: 'Reports', active: false, icon: PieChart },
+  { title: 'Dashboard', active: true, icon: BarChart3, href: '/dashboard' },
+  { title: 'Invoices', active: false, icon: FileText, href: '/invoices' },
+  { title: 'Clients', active: false, icon: Users, href: '/clients' },
+  { title: 'Quotations', active: false, icon: Receipt, href: '/quotations' },
+  { title: 'Expenses', active: false, icon: Wallet, href: '/expenses' },
+  { title: 'Reports', active: false, icon: PieChart, href: '/reports' },
+  { title: 'My Company', active: false, icon: Building2, href: '/company' },
 ];
 
 interface DashboardSidebarProps {
@@ -51,8 +54,8 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ sidebarOpen, setSid
         <ul className="space-y-2">
           {sidebarItems.map((item, index) => (
             <li key={index} className={`animate-fade-in delay-${100 + index * 100}`}>
-              <a
-                href="#"
+              <Link
+                to={item.href}
                 className={`group flex items-center px-4 py-4 text-sm font-medium rounded-xl transition-all duration-300 hover-lift ${
                   item.active 
                     ? 'bg-gradient-to-r from-mokm-orange-500 via-mokm-pink-500 to-mokm-purple-500 text-white shadow-colored-lg' 
@@ -61,7 +64,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ sidebarOpen, setSid
               >
                 <item.icon className={`h-5 w-5 mr-4 ${item.active ? 'text-white' : 'text-slate-500 group-hover:text-mokm-purple-600'} transition-colors`} />
                 <span className="font-sf-pro">{item.title}</span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
