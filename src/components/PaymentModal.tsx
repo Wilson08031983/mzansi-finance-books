@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -10,6 +10,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { SUBSCRIPTION_PLANS, formatPrice } from '@/lib/paystack';
+import { useAuth } from '@/hooks/useAuth';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -26,7 +27,14 @@ const PaymentModal = ({
   onPayment, 
   isProcessing 
 }: PaymentModalProps) => {
+  const { user } = useAuth();
   const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+    if (user?.email) {
+      setUserEmail(user.email);
+    }
+  }, [user]);
 
   const handlePayment = () => {
     if (!userEmail) {
@@ -67,6 +75,7 @@ const PaymentModal = ({
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
               placeholder="Enter your email"
+              disabled={!!user?.email}
               required
             />
           </div>

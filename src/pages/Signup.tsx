@@ -1,15 +1,19 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -21,10 +25,33 @@ const Signup = () => {
     phone: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup logic here
-    console.log('Signup attempt:', formData);
+    
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+    
+    try {
+      await signUp(formData.email, formData.password, {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        company_name: formData.companyName,
+        business_type: formData.businessType,
+        phone: formData.phone
+      });
+      
+      alert('Please check your email for verification instructions');
+      navigate('/login');
+    } catch (error: any) {
+      console.error('Signup error:', error);
+      alert(error.message || 'Error creating account');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -171,9 +198,10 @@ const Signup = () => {
 
               <Button
                 type="submit"
+                disabled={loading}
                 className="w-full h-12 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                Start Free Trial
+                {loading ? 'Creating Account...' : 'Start Free Trial'}
               </Button>
             </form>
 
