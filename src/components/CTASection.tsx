@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Star } from 'lucide-react';
@@ -32,7 +33,7 @@ const CTASection = () => {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="border-2 border-white/80 text-white hover:bg-white hover:text-slate-700 px-8 py-4 text-lg font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-xl">
+              <Button size="lg" variant="outline" className="border-2 border-white/80 text-white hover:bg-gradient-to-r hover:from-mokm-orange-400 hover:to-mokm-pink-500 hover:text-white hover:border-transparent px-8 py-4 text-lg font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-xl">
                 Contact Sales
               </Button>
             </Link>
