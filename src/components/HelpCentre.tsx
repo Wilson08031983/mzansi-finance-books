@@ -19,6 +19,16 @@ const HelpCentre = () => {
     setIsOpen(true);
   };
 
+  const handleEmailClick = () => {
+    console.log('Email button clicked');
+    window.location.href = 'mailto:mokgethwamoabelo@gmail.com';
+  };
+
+  const handleWhatsAppClick = () => {
+    console.log('WhatsApp button clicked');
+    window.open('https://wa.me/27645504029', '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
@@ -43,37 +53,35 @@ const HelpCentre = () => {
         </DialogHeader>
         
         <div className="space-y-4 pt-4">
-          <div className="flex items-center space-x-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg hover:shadow-md transition-all duration-300 transform hover:scale-105">
+          <button
+            onClick={handleEmailClick}
+            className="w-full flex items-center space-x-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg hover:shadow-md transition-all duration-300 transform hover:scale-105 cursor-pointer border-none"
+          >
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
               <Mail className="h-6 w-6 text-purple-600" />
             </div>
-            <div>
+            <div className="text-left">
               <h4 className="font-semibold text-gray-800">Email Support</h4>
-              <a 
-                href="mailto:mokgethwamoabelo@gmail.com"
-                className="text-purple-600 hover:text-purple-800 transition-colors duration-300"
-              >
+              <span className="text-purple-600 hover:text-purple-800 transition-colors duration-300">
                 mokgethwamoabelo@gmail.com
-              </a>
+              </span>
             </div>
-          </div>
+          </button>
           
-          <div className="flex items-center space-x-4 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg hover:shadow-md transition-all duration-300 transform hover:scale-105">
+          <button
+            onClick={handleWhatsAppClick}
+            className="w-full flex items-center space-x-4 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg hover:shadow-md transition-all duration-300 transform hover:scale-105 cursor-pointer border-none"
+          >
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
               <MessageCircle className="h-6 w-6 text-green-600" />
             </div>
-            <div>
+            <div className="text-left">
               <h4 className="font-semibold text-gray-800">WhatsApp Support</h4>
-              <a 
-                href="https://wa.me/27645504029"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-green-600 hover:text-green-800 transition-colors duration-300"
-              >
+              <span className="text-green-600 hover:text-green-800 transition-colors duration-300">
                 064 550 4029
-              </a>
+              </span>
             </div>
-          </div>
+          </button>
           
           <div className="text-center text-sm text-gray-500 pt-4 border-t">
             We're here to help you get the most out of MOKMzansiBooks
