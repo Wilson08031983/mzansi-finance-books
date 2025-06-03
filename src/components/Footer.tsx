@@ -41,7 +41,15 @@ const Footer = () => {
           <div className="space-y-4 animate-fade-in delay-400">
             <h4 className="text-lg font-semibold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Support</h4>
             <ul className="space-y-2 text-gray-300">
-              <li><Link to="/help" className="hover:text-orange-400 transition-all duration-300 transform hover:translate-x-1">Help Center</Link></li>
+              <li>
+                <div className="space-y-1">
+                  <div className="text-orange-400 font-medium">Help Center</div>
+                  <div className="text-xs text-gray-400">
+                    <div>Email: mokgethwamoabelo@gmail.com</div>
+                    <div>WhatsApp: 064 550 4029</div>
+                  </div>
+                </div>
+              </li>
               <li><Link to="/contact" className="hover:text-pink-400 transition-all duration-300 transform hover:translate-x-1">Contact Us</Link></li>
               <li><Link to="/privacy" className="hover:text-purple-400 transition-all duration-300 transform hover:translate-x-1">Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-blue-400 transition-all duration-300 transform hover:translate-x-1">Terms of Service</Link></li>
