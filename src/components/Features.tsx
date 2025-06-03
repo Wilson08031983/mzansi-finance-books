@@ -50,8 +50,8 @@ const Features = () => {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900">
+        <div className="text-center space-y-4 mb-16 animate-fade-in">
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 drop-shadow-sm">
             Everything Your Business Needs
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -63,14 +63,15 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group p-8 rounded-2xl bg-white hover:bg-gray-50 hover:shadow-lg transition-all duration-300 border border-gray-100"
+              className="group p-8 rounded-2xl bg-white hover:bg-gray-50 hover:shadow-2xl transition-all duration-500 border border-gray-100 shadow-lg hover:-translate-y-2 animate-fade-in"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="space-y-4">
-                <div className={`w-12 h-12 ${feature.bg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
+                <div className={`w-12 h-12 ${feature.bg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-md group-hover:shadow-lg`}>
+                  <feature.icon className={`h-6 w-6 ${feature.color} transition-transform group-hover:scale-110`} />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-gray-900 group-hover:text-mokm-purple-700 transition-colors duration-300">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">{feature.description}</p>
               </div>
             </div>
           ))}
