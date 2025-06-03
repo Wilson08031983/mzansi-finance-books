@@ -12,27 +12,31 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">M</span>
+            <div className="w-10 h-10 rounded-lg overflow-hidden">
+              <img 
+                src="/lovable-uploads/8021eb93-6e6a-421e-a8ff-bed101269a7c.png" 
+                alt="MOKMzansiBooks Logo" 
+                className="w-full h-full object-contain"
+              />
             </div>
             <span className="text-xl font-semibold text-gray-900">MOKMzansiBooks</span>
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-purple-600 transition-colors">Home</Link>
-            <Link to="/features" className="text-gray-700 hover:text-purple-600 transition-colors">Features</Link>
-            <Link to="/pricing" className="text-gray-700 hover:text-purple-600 transition-colors">Pricing</Link>
-            <Link to="/contact" className="text-gray-700 hover:text-purple-600 transition-colors">Contact</Link>
+            <Link to="/" className="text-gray-700 hover:text-pink-500 transition-colors">Home</Link>
+            <Link to="/features" className="text-gray-700 hover:text-pink-500 transition-colors">Features</Link>
+            <Link to="/pricing" className="text-gray-700 hover:text-pink-500 transition-colors">Pricing</Link>
+            <Link to="/contact" className="text-gray-700 hover:text-pink-500 transition-colors">Contact</Link>
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-gray-700 hover:text-purple-600">
+              <Button variant="ghost" className="text-gray-700 hover:text-pink-500">
                 Log In
               </Button>
             </Link>
             <Link to="/signup">
-              <Button className="bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+              <Button className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300">
                 Start Free Trial
               </Button>
             </Link>
@@ -50,16 +54,16 @@ const Header = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-white border-b border-gray-200">
           <div className="px-4 py-4 space-y-4">
-            <Link to="/" className="block text-gray-700 hover:text-purple-600">Home</Link>
-            <Link to="/features" className="block text-gray-700 hover:text-purple-600">Features</Link>
-            <Link to="/pricing" className="block text-gray-700 hover:text-purple-600">Pricing</Link>
-            <Link to="/contact" className="block text-gray-700 hover:text-purple-600">Contact</Link>
+            <Link to="/" className="block text-gray-700 hover:text-pink-500">Home</Link>
+            <Link to="/features" className="block text-gray-700 hover:text-pink-500">Features</Link>
+            <Link to="/pricing" className="block text-gray-700 hover:text-pink-500">Pricing</Link>
+            <Link to="/contact" className="block text-gray-700 hover:text-pink-500">Contact</Link>
             <div className="pt-4 space-y-2">
               <Link to="/login" className="block">
                 <Button variant="ghost" className="w-full text-gray-700">Log In</Button>
               </Link>
               <Link to="/signup" className="block">
-                <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-500 text-white">
+                <Button className="w-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white">
                   Start Free Trial
                 </Button>
               </Link>

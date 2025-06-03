@@ -54,7 +54,7 @@ const Features = () => {
               className="group p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="space-y-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 via-purple-500 to-blue-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>

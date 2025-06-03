@@ -1,7 +1,7 @@
 
 const FounderSection = () => {
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 to-blue-50">
+    <section className="py-20 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
@@ -9,7 +9,7 @@ const FounderSection = () => {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
                 Meet Our CEO & Founder
               </h2>
-              <h3 className="text-2xl font-semibold text-purple-600">
+              <h3 className="text-2xl font-semibold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
                 Wilson Mokgethwa Moabelo
               </h3>
             </div>
@@ -21,7 +21,7 @@ const FounderSection = () => {
               <p>
                 "Filling tender documents, hitting dead ends, losing money on stationery without getting anything in return. I had to come up with an idea to assist me and others to have an automated business website that will save time and cost of filling endless RFQs and running without funding and zero assistance."
               </p>
-              <p className="font-semibold text-purple-600">
+              <p className="font-semibold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
                 "This was the birth of MOKMzansiBooks est. 2024 - to help South Africans grow, one page at a time."
               </p>
             </div>
@@ -37,10 +37,14 @@ const FounderSection = () => {
 
           <div className="relative">
             <div className="relative w-full max-w-md mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-blue-500 rounded-2xl transform rotate-6"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-400 via-purple-400 to-blue-500 rounded-2xl transform rotate-6"></div>
               <div className="relative bg-white p-2 rounded-2xl shadow-xl">
-                <div className="w-full h-96 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center">
-                  <span className="text-gray-500 text-lg">CEO & Founder Photo</span>
+                <div className="w-full h-96 rounded-xl overflow-hidden">
+                  <img 
+                    src="/lovable-uploads/a344c447-63bc-484e-b7b6-4cbe63f7da2e.png" 
+                    alt="Wilson Mokgethwa Moabelo - CEO & Founder" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
