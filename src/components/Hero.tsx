@@ -28,13 +28,13 @@ const Hero = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in delay-1000">
-            <Link to="/signup">
+            <Link to="/payment">
               <Button size="lg" className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 hover:from-orange-500 hover:via-pink-600 hover:to-purple-600 text-white px-8 py-4 text-lg font-semibold shadow-business-xl hover:shadow-4xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 animate-float">
                 Start Free 30-Day Trial
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
-            <Link to="/demo">
+            <Link to="/payment">
               <Button size="lg" variant="outline" className="border-2 border-slate-300 text-slate-700 hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-500 hover:text-white hover:border-transparent px-8 py-4 text-lg font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-business hover:shadow-business-xl">
                 Pay Now
               </Button>

@@ -4,47 +4,9 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
+import { SUBSCRIPTION_PLANS, formatPrice } from '@/lib/paystack';
 
 const Pricing = () => {
-  const plans = [
-    {
-      name: "Starter",
-      price: "R299",
-      period: "/month",
-      features: [
-        "Up to 5 invoices per month",
-        "Basic financial reports",
-        "Client management",
-        "Email support"
-      ]
-    },
-    {
-      name: "Professional",
-      price: "R599",
-      period: "/month",
-      popular: true,
-      features: [
-        "Unlimited invoices",
-        "Advanced financial reports",
-        "RFQ automation",
-        "Priority support",
-        "VAT compliance tools"
-      ]
-    },
-    {
-      name: "Enterprise",
-      price: "R999",
-      period: "/month",
-      features: [
-        "Everything in Professional",
-        "Custom integrations",
-        "Dedicated account manager",
-        "Advanced analytics",
-        "API access"
-      ]
-    }
-  ];
-
   return (
     <div className="min-h-screen">
       <Header />
@@ -61,16 +23,16 @@ const Pricing = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {plans.map((plan, index) => (
+              {Object.entries(SUBSCRIPTION_PLANS).map(([key, plan], index) => (
                 <div
                   key={index}
                   className={`p-8 rounded-2xl border transition-all duration-300 hover:shadow-xl ${
-                    plan.popular
+                    key === 'monthly'
                       ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-blue-50 shadow-lg'
                       : 'border-gray-200 bg-white hover:border-purple-200'
                   }`}
                 >
-                  {plan.popular && (
+                  {key === 'monthly' && (
                     <div className="text-center mb-4">
                       <span className="bg-gradient-to-r from-purple-600 to-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
                         Most Popular
@@ -81,9 +43,20 @@ const Pricing = () => {
                   <div className="text-center mb-8">
                     <h3 className="text-2xl font-bold text-gray-800 mb-2">{plan.name}</h3>
                     <div className="mb-4">
-                      <span className="text-4xl font-bold text-gray-800">{plan.price}</span>
-                      <span className="text-gray-600">{plan.period}</span>
+                      <span className="text-4xl font-bold text-gray-800">
+                        {plan.price === 0 ? 'Free' : formatPrice(plan.price)}
+                      </span>
+                      {plan.price > 0 && (
+                        <span className="text-gray-600">
+                          /{key === 'annual' ? 'year' : 'month'}
+                        </span>
+                      )}
                     </div>
+                    {key === 'annual' && (
+                      <div className="text-sm text-green-600 font-semibold">
+                        Save 5% annually
+                      </div>
+                    )}
                   </div>
 
                   <ul className="space-y-4 mb-8">
@@ -95,10 +68,10 @@ const Pricing = () => {
                     ))}
                   </ul>
 
-                  <Link to="/signup">
+                  <Link to="/payment">
                     <Button
                       className={`w-full h-12 font-semibold transition-all duration-300 ${
-                        plan.popular
+                        key === 'monthly'
                           ? 'bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white'
                           : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                       }`}
