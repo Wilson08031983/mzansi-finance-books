@@ -17,12 +17,12 @@ import {
 
 const sidebarItems = [
   { title: 'Dashboard', active: true, icon: BarChart3, href: '/dashboard' },
+  { title: 'My Company', active: false, icon: Building2, href: '/company' },
   { title: 'Invoices', active: false, icon: FileText, href: '/invoices' },
   { title: 'Clients', active: false, icon: Users, href: '/clients' },
   { title: 'Quotations', active: false, icon: Receipt, href: '/quotations' },
   { title: 'Expenses', active: false, icon: Wallet, href: '/expenses' },
   { title: 'Reports', active: false, icon: PieChart, href: '/reports' },
-  { title: 'My Company', active: false, icon: Building2, href: '/company' },
 ];
 
 interface DashboardSidebarProps {
