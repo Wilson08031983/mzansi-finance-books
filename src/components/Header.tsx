@@ -1,73 +1,185 @@
-
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
+import HelpCentre from './HelpCentre';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const location = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-business-lg transition-all duration-300">
+    <header className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-3 animate-fade-in">
-            <div className="w-10 h-10 rounded-lg overflow-hidden shadow-business hover:shadow-business-lg transition-shadow duration-300 animate-float">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+            <div className="w-10 h-10 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <img 
                 src="/lovable-uploads/8021eb93-6e6a-421e-a8ff-bed101269a7c.png" 
                 alt="MOKMzansiBooks Logo" 
                 className="w-full h-full object-contain"
               />
             </div>
-            <span className="text-xl font-semibold bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent drop-shadow-sm">MOKMzansiBooks</span>
-          </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+              MOKMzansiBooks
+            </span>
+          </Link>
 
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-600 hover:text-purple-700 transition-all duration-300 font-medium transform hover:scale-105 hover:-translate-y-0.5 drop-shadow-sm">Home</Link>
-            <Link to="/features" className="text-gray-600 hover:text-purple-700 transition-all duration-300 font-medium transform hover:scale-105 hover:-translate-y-0.5 drop-shadow-sm">Features</Link>
-            <Link to="/pricing" className="text-gray-600 hover:text-purple-700 transition-all duration-300 font-medium transform hover:scale-105 hover:-translate-y-0.5 drop-shadow-sm">Pricing</Link>
-            <Link to="/contact" className="text-gray-600 hover:text-purple-700 transition-all duration-300 font-medium transform hover:scale-105 hover:-translate-y-0.5 drop-shadow-sm">Contact</Link>
+            <Link 
+              to="/features" 
+              className={`font-medium transition-colors hover:text-purple-600 ${
+                location.pathname === '/features' ? 'text-purple-600' : 'text-gray-700'
+              }`}
+            >
+              Features
+            </Link>
+            <Link 
+              to="/pricing" 
+              className={`font-medium transition-colors hover:text-purple-600 ${
+                location.pathname === '/pricing' ? 'text-purple-600' : 'text-gray-700'
+              }`}
+            >
+              Pricing
+            </Link>
+            <Link 
+              to="/demo" 
+              className={`font-medium transition-colors hover:text-purple-600 ${
+                location.pathname === '/demo' ? 'text-purple-600' : 'text-gray-700'
+              }`}
+            >
+              Demo
+            </Link>
+            <Link 
+              to="/contact" 
+              className={`font-medium transition-colors hover:text-purple-600 ${
+                location.pathname === '/contact' ? 'text-purple-600' : 'text-gray-700'
+              }`}
+            >
+              Contact
+            </Link>
+            <HelpCentre />
           </nav>
 
+          {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button variant="ghost" className="text-gray-600 hover:text-purple-700 font-medium transition-all duration-300 transform hover:scale-105 shadow-business hover:shadow-business-lg">
-                Log In
-              </Button>
-            </Link>
-            <Link to="/signup">
-              <Button className="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 hover:from-orange-500 hover:via-pink-600 hover:to-purple-600 text-white shadow-business-lg hover:shadow-business-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-0.5">
-                Start Free Trial
-              </Button>
-            </Link>
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-700">Welcome, {user.email}</span>
+                <Link to="/dashboard">
+                  <Button size="sm" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button 
+                  onClick={logout} 
+                  variant="outline" 
+                  size="sm"
+                  className="hover:bg-red-50 hover:border-red-300 hover:text-red-600"
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="ghost" size="sm" className="hover:bg-purple-50 hover:text-purple-600">
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button size="sm" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
-          <button
-            className="md:hidden text-gray-600 hover:text-purple-700 transition-colors duration-300 p-2 rounded-lg shadow-business hover:shadow-business-lg"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
         </div>
       </div>
 
+      {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-md border-b border-slate-200 animate-fade-in shadow-business-lg">
-          <div className="px-4 py-4 space-y-4">
-            <Link to="/" className="block text-gray-600 hover:text-purple-700 font-medium transition-colors duration-300 p-2 rounded-lg hover:bg-gray-50">Home</Link>
-            <Link to="/features" className="block text-gray-600 hover:text-purple-700 font-medium transition-colors duration-300 p-2 rounded-lg hover:bg-gray-50">Features</Link>
-            <Link to="/pricing" className="block text-gray-600 hover:text-purple-700 font-medium transition-colors duration-300 p-2 rounded-lg hover:bg-gray-50">Pricing</Link>
-            <Link to="/contact" className="block text-gray-600 hover:text-purple-700 font-medium transition-colors duration-300 p-2 rounded-lg hover:bg-gray-50">Contact</Link>
-            <div className="pt-4 space-y-2">
-              <Link to="/login" className="block">
-                <Button variant="ghost" className="w-full text-gray-600 font-medium shadow-business hover:shadow-business-lg">Log In</Button>
-              </Link>
-              <Link to="/signup" className="block">
-                <Button className="w-full bg-gradient-to-r from-orange-400 via-pink-500 to-purple-500 hover:from-orange-500 hover:via-pink-600 hover:to-purple-600 text-white shadow-business-lg hover:shadow-business-xl">
-                  Start Free Trial
-                </Button>
-              </Link>
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200 shadow-lg">
+            <Link 
+              to="/features" 
+              className="block px-3 py-2 text-gray-700 hover:text-purple-600 font-medium transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Features
+            </Link>
+            <Link 
+              to="/pricing" 
+              className="block px-3 py-2 text-gray-700 hover:text-purple-600 font-medium transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Pricing
+            </Link>
+            <Link 
+              to="/demo" 
+              className="block px-3 py-2 text-gray-700 hover:text-purple-600 font-medium transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Demo
+            </Link>
+            <Link 
+              to="/contact" 
+              className="block px-3 py-2 text-gray-700 hover:text-purple-600 font-medium transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact
+            </Link>
+            <div className="px-3 py-2">
+              <HelpCentre />
             </div>
+            {user ? (
+              <div className="px-3 py-2 space-y-2">
+                <div className="text-gray-700 text-sm">Welcome, {user.email}</div>
+                <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                  <Button size="sm" className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button 
+                  onClick={() => { logout(); setIsMenuOpen(false); }} 
+                  variant="outline" 
+                  size="sm"
+                  className="w-full hover:bg-red-50 hover:border-red-300 hover:text-red-600"
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <div className="px-3 py-2 space-y-2">
+                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="ghost" size="sm" className="w-full hover:bg-purple-50 hover:text-purple-600">
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
+                  <Button size="sm" className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+                    Get Started
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}
