@@ -1,5 +1,6 @@
 
 import { Link } from 'react-router-dom';
+import HelpCentre from './HelpCentre';
 
 const Footer = () => {
   return (
@@ -42,8 +43,13 @@ const Footer = () => {
             <h4 className="text-lg font-semibold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Support</h4>
             <ul className="space-y-2 text-gray-300">
               <li>
+                <div className="mb-3">
+                  <HelpCentre />
+                </div>
+              </li>
+              <li>
                 <div className="space-y-1">
-                  <div className="text-orange-400 font-medium">Help Center</div>
+                  <div className="text-orange-400 font-medium">Direct Contact</div>
                   <div className="text-xs text-gray-400">
                     <div>Email: mokgethwamoabelo@gmail.com</div>
                     <div>WhatsApp: 064 550 4029</div>

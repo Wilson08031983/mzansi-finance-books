@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import HelpCentre from './HelpCentre';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -63,7 +62,6 @@ const Header = () => {
             >
               Contact
             </Link>
-            <HelpCentre />
           </nav>
 
           {/* Auth Buttons */}
@@ -147,9 +145,6 @@ const Header = () => {
             >
               Contact
             </Link>
-            <div className="px-3 py-2">
-              <HelpCentre />
-            </div>
             {user ? (
               <div className="px-3 py-2 space-y-2">
                 <div className="text-gray-700 text-sm">Welcome, {user.email}</div>
