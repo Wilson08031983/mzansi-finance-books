@@ -1,19 +1,32 @@
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { HelpCircle, Mail, MessageCircle, X } from 'lucide-react';
 
 const HelpCentre = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  console.log('HelpCentre render, isOpen:', isOpen);
+
+  const handleOpenChange = (open: boolean) => {
+    console.log('Dialog open state changing to:', open);
+    setIsOpen(open);
+  };
+
+  const handleButtonClick = () => {
+    console.log('Help Centre button clicked');
+    setIsOpen(true);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button 
           variant="outline" 
           size="sm" 
           className="flex items-center space-x-2 hover:bg-purple-50 hover:border-purple-300 transition-all duration-300"
+          onClick={handleButtonClick}
         >
           <HelpCircle className="h-4 w-4" />
           <span>Help Centre</span>
@@ -30,13 +43,12 @@ const HelpCentre = () => {
           <DialogTitle className="text-2xl font-bold text-center text-gray-800 animate-slide-up pt-4">
             Help Centre
           </DialogTitle>
+          <DialogDescription className="text-center text-gray-600 mt-2">
+            Get in touch with our support team for assistance
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-6 pt-4 animate-fade-in delay-200">
-          <p className="text-center text-gray-600 mb-6">
-            Get in touch with our support team for assistance
-          </p>
-          
           <div className="space-y-4">
             <div className="flex items-center space-x-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg hover:shadow-md transition-all duration-300 transform hover:scale-105">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
