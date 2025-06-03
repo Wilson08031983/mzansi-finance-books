@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
@@ -7,7 +8,7 @@ import HelpCentre from './HelpCentre';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
   const location = useLocation();
 
   return (
@@ -76,7 +77,7 @@ const Header = () => {
                   </Button>
                 </Link>
                 <Button 
-                  onClick={logout} 
+                  onClick={signOut} 
                   variant="outline" 
                   size="sm"
                   className="hover:bg-red-50 hover:border-red-300 hover:text-red-600"
@@ -158,7 +159,7 @@ const Header = () => {
                   </Button>
                 </Link>
                 <Button 
-                  onClick={() => { logout(); setIsMenuOpen(false); }} 
+                  onClick={() => { signOut(); setIsMenuOpen(false); }} 
                   variant="outline" 
                   size="sm"
                   className="w-full hover:bg-red-50 hover:border-red-300 hover:text-red-600"
