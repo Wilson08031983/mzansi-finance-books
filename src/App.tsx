@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
+import ContactSales from "./pages/ContactSales";
 import Demo from "./pages/Demo";
 import Payment from "./pages/Payment";
 import ThankYou from "./pages/ThankYou";
@@ -42,6 +43,7 @@ const App: React.FC = () => {
               <Route path="/features" element={<Features />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/contact-sales" element={<ContactSales />} />
               <Route path="/demo" element={<Demo />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
