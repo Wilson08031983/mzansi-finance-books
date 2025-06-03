@@ -7,43 +7,31 @@ const Features = () => {
       icon: FileText,
       title: 'Smart Invoicing',
       description: 'Create professional invoices with automatic VAT calculations tailored for South African tax requirements.',
-      color: 'text-mokm-purple-600',
-      bg: 'bg-mokm-purple-50'
     },
     {
       icon: BarChart3,
       title: 'Financial Reports',
       description: 'Get insights with comprehensive reports including P&L, cash flow, and tax-ready statements.',
-      color: 'text-mokm-blue-600',
-      bg: 'bg-mokm-blue-50'
     },
     {
       icon: Users,
       title: 'Client Management',
       description: 'Manage all your client information, transaction history, and communications in one place.',
-      color: 'text-mokm-pink-600',
-      bg: 'bg-mokm-pink-50'
     },
     {
       icon: Zap,
       title: 'RFQ Automation',
       description: 'Streamline your request for quotation process and save time on tender documents.',
-      color: 'text-mokm-orange-600',
-      bg: 'bg-mokm-orange-50'
     },
     {
       icon: Clock,
       title: 'Real-time Updates',
       description: 'Stay on top of your finances with real-time updates and automated reminders.',
-      color: 'text-mokm-purple-600',
-      bg: 'bg-mokm-purple-50'
     },
     {
       icon: Shield,
       title: 'Bank-level Security',
       description: 'Your data is protected with enterprise-grade security and regular backups.',
-      color: 'text-mokm-blue-600',
-      bg: 'bg-mokm-blue-50'
     }
   ];
 
@@ -51,7 +39,7 @@ const Features = () => {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-16 animate-fade-in">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 drop-shadow-sm">
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900">
             Everything Your Business Needs
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -63,15 +51,15 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group p-8 rounded-2xl bg-white hover:bg-gray-50 hover:shadow-2xl transition-all duration-500 border border-gray-100 shadow-lg hover:-translate-y-2 animate-fade-in"
+              className="group p-8 rounded-2xl bg-white hover:bg-gray-50 border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="space-y-4">
-                <div className={`w-12 h-12 ${feature.bg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-md group-hover:shadow-lg`}>
-                  <feature.icon className={`h-6 w-6 ${feature.color} transition-transform group-hover:scale-110`} />
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <feature.icon className="h-6 w-6 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 group-hover:text-mokm-purple-700 transition-colors duration-300">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             </div>
           ))}
