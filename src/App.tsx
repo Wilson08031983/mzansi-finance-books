@@ -19,6 +19,7 @@ import Payment from "./pages/Payment";
 import ThankYou from "./pages/ThankYou";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Integrations from "./pages/Integrations";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -45,6 +46,7 @@ const App: React.FC = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/contact-sales" element={<ContactSales />} />
               <Route path="/demo" element={<Demo />} />
+              <Route path="/integrations" element={<Integrations />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/payment" element={<Payment />} />
