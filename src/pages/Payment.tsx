@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check, X, ArrowLeft } from 'lucide-react';
+import { Check, ArrowLeft } from 'lucide-react';
 import { PAYSTACK_CONFIG, SUBSCRIPTION_PLANS, formatPrice } from '@/lib/paystack';
 import {
   Dialog,
@@ -49,13 +49,7 @@ const Payment = () => {
   };
 
   const handlePaymentClose = () => {
-    console.log('Payment closed');
-    setIsProcessing(false);
-    setShowPaymentModal(false);
-  };
-
-  const handlePaymentError = (error: any) => {
-    console.error('Payment error:', error);
+    console.log('Payment closed or failed');
     setIsProcessing(false);
     setShowPaymentModal(false);
     // TODO: Implement retry logic for 7 days
@@ -90,7 +84,6 @@ const Payment = () => {
     initializePayment({
       onSuccess: handlePaymentSuccess,
       onClose: handlePaymentClose,
-      onError: handlePaymentError,
     });
   };
 
