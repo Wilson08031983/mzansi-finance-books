@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import HelpCentre from './HelpCentre';
 
@@ -42,15 +43,8 @@ const Footer = () => {
                 </div>
               </li>
               <li>
-                <div className="space-y-1">
-                  <div className="text-orange-400 font-medium">Direct Contact</div>
-                  <div className="text-xs text-gray-400">
-                    <div>Email: mokgethwamoabelo@gmail.com</div>
-                    <div>WhatsApp: 064 550 4029</div>
-                  </div>
-                </div>
+                <Link to="/contact" className="hover:text-pink-400 transition-all duration-300 transform hover:translate-x-1">Contact Us</Link>
               </li>
-              <li><Link to="/contact" className="hover:text-pink-400 transition-all duration-300 transform hover:translate-x-1">Contact Us</Link></li>
               <li><Link to="/privacy" className="hover:text-purple-400 transition-all duration-300 transform hover:translate-x-1">Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-blue-400 transition-all duration-300 transform hover:translate-x-1">Terms of Service</Link></li>
             </ul>
