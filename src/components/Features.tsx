@@ -36,13 +36,13 @@ const Features = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
+    <section className="py-20 bg-gradient-to-br from-white via-slate-50 to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-16 animate-fade-in">
-          <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-700 bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-800 animate-slide-up">
             Everything Your Business Needs
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in delay-300">
             Powerful features designed specifically for South African businesses, from sole proprietors to growing enterprises.
           </p>
         </div>
@@ -51,15 +51,15 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group p-8 rounded-2xl bg-white/80 backdrop-blur-sm hover:bg-white border border-purple-200 hover:border-purple-400 transition-all duration-300 hover:shadow-xl hover:shadow-purple-200/50 animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="group p-8 rounded-2xl bg-white hover:bg-gradient-to-br hover:from-white hover:to-slate-50 border border-gray-200 hover:border-purple-200 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-100/50 transform hover:scale-105 hover:-translate-y-2 animate-fade-in"
+              style={{ animationDelay: `${index * 150}ms` }}
             >
               <div className="space-y-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-200 via-pink-200 to-purple-200 rounded-xl flex items-center justify-center group-hover:from-orange-300 group-hover:via-pink-300 group-hover:to-purple-300 transition-all duration-300">
-                  <feature.icon className="h-6 w-6 text-purple-700" />
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-100 via-pink-100 to-purple-100 rounded-xl flex items-center justify-center group-hover:from-orange-200 group-hover:via-pink-200 group-hover:to-purple-200 transition-all duration-500 group-hover:scale-110 shadow-md group-hover:shadow-lg">
+                  <feature.icon className="h-6 w-6 text-slate-600 group-hover:text-purple-700 transition-colors duration-300" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-gray-800 group-hover:text-purple-700 transition-colors duration-300">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">{feature.description}</p>
               </div>
             </div>
           ))}
