@@ -19,7 +19,7 @@ const FounderSection = () => {
             <div className="flex-shrink-0">
               <Avatar className="w-32 h-32 shadow-business-lg animate-float">
                 <AvatarImage 
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face" 
+                  src="/lovable-uploads/9df5b2f8-e248-4efd-90ef-8cf2cf67bd9a.png" 
                   alt="Wilson Mokgethwa Moabelo"
                   className="object-cover"
                 />
