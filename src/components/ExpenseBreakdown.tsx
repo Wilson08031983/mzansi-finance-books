@@ -67,12 +67,13 @@ const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ data }) => {
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
                     const data = payload[0];
-                    const percentage = ((data.value / total) * 100).toFixed(1);
+                    const value = Number(data.value) || 0;
+                    const percentage = ((value / total) * 100).toFixed(1);
                     return (
                       <div className="glass backdrop-blur-xl bg-white/90 border border-white/20 rounded-xl shadow-business p-3">
                         <p className="font-medium text-slate-900 font-sf-pro">{data.payload.label}</p>
                         <p className="text-sm text-slate-600 font-sf-pro">
-                          R {data.value.toLocaleString()} ({percentage}%)
+                          R {value.toLocaleString()} ({percentage}%)
                         </p>
                       </div>
                     );
