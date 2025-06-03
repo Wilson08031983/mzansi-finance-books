@@ -39,7 +39,7 @@ const CTASection = () => {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-pink-600 px-8 py-4 text-lg font-semibold transition-all duration-300">
+              <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm border-2 border-white/80 text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl">
                 Contact Sales
               </Button>
             </Link>
