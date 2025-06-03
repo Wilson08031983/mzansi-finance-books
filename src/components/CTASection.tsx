@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Star } from 'lucide-react';
@@ -6,7 +5,7 @@ import { ArrowRight, Star } from 'lucide-react';
 const CTASection = () => {
   return (
     <section className="py-20 bg-gradient-to-br from-slate-700 via-purple-700 to-blue-800 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-100/5 via-purple-100/5 to-blue-100/5"></div>
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="space-y-8 animate-fade-in">
           <div className="flex items-center justify-center space-x-1 mb-4 animate-scale-in delay-200">
