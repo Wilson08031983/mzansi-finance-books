@@ -1,5 +1,5 @@
 
-import { User } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 const FounderSection = () => {
   return (
@@ -17,13 +17,20 @@ const FounderSection = () => {
           
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="flex-shrink-0">
-              <div className="w-32 h-32 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full flex items-center justify-center shadow-business-lg animate-float">
-                <User className="h-16 w-16 text-white" />
-              </div>
+              <Avatar className="w-32 h-32 shadow-business-lg animate-float">
+                <AvatarImage 
+                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face" 
+                  alt="Wilson Mokgethwa Moabelo"
+                  className="object-cover"
+                />
+                <AvatarFallback className="bg-gradient-to-br from-orange-400 to-purple-600 text-white text-2xl font-bold">
+                  WM
+                </AvatarFallback>
+              </Avatar>
             </div>
             
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">Mokgethwa Moabelo</h3>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">Wilson Mokgethwa Moabelo</h3>
               <p className="text-purple-600 font-semibold mb-6">Founder & CEO</p>
               
               <blockquote className="text-lg text-gray-600 leading-relaxed italic">
