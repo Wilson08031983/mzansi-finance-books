@@ -1,50 +1,36 @@
 
+import { User } from 'lucide-react';
+
 const FounderSection = () => {
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6 animate-fade-in">
-            <div className="space-y-4 animate-slide-up">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-                Meet Our CEO & Founder
-              </h2>
-              <h3 className="text-2xl font-semibold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-700 bg-clip-text text-transparent">
-                Wilson Mokgethwa Moabelo
-              </h3>
+    <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-800 mb-4 animate-fade-in">
+            Meet Our Founder
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-purple-600 mx-auto animate-scale-in delay-300"></div>
+        </div>
+        
+        <div className="bg-white rounded-2xl shadow-business p-8 md:p-12 relative overflow-hidden animate-slide-up delay-500">
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600"></div>
+          
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-shrink-0">
+              <div className="w-32 h-32 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full flex items-center justify-center shadow-business-lg animate-float">
+                <User className="h-16 w-16 text-white" />
+              </div>
             </div>
             
-            <div className="space-y-4 text-gray-700 leading-relaxed animate-fade-in delay-300">
-              <p className="animate-fade-in delay-500">
-                "I was a businessman who tried almost every business you can think of, and in all my trials and errors, running at a loss, I realized that there might be other South Africans suffering the same fate as me on a daily basis."
-              </p>
-              <p className="animate-fade-in delay-700">
-                "Filling tender documents, hitting dead ends, losing money on stationery without getting anything in return. I had to come up with an idea to assist me and others to have an automated business website that will save time and cost of filling endless RFQs and running without funding and zero assistance."
-              </p>
-              <p className="font-semibold bg-gradient-to-r from-purple-700 via-blue-700 to-orange-600 bg-clip-text text-transparent animate-fade-in delay-1000">
-                "This was the birth of MOKMzansiBooks est. 2024 - to help South Africans grow, one page at a time."
-              </p>
-            </div>
-
-            <div className="space-y-2 text-sm text-gray-600 bg-white/70 backdrop-blur-sm p-6 rounded-xl border border-slate-200 shadow-lg hover:shadow-xl transition-all duration-500 animate-scale-in delay-1200">
-              <p><strong>Company:</strong> Morwa Moabelo (Pty) Ltd</p>
-              <p><strong>Reg No:</strong> 2018/421571/07</p>
-              <p><strong>Established:</strong> 2018, Pretoria Atteridgeville</p>
-              <p><strong>Email:</strong> mokgethwamoabelo@gmail.com</p>
-              <p><strong>Phone:</strong> +27 64 550 4029</p>
-            </div>
-          </div>
-
-          <div className="relative animate-fade-in delay-300">
-            <div className="relative w-full max-w-md mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-300 via-pink-400 to-purple-500 rounded-xl blur-xl opacity-20 animate-pulse"></div>
-              <div className="relative w-full h-96 rounded-xl overflow-hidden shadow-2xl border-2 border-white hover:shadow-3xl transition-all duration-500 transform hover:scale-105">
-                <img 
-                  src="/lovable-uploads/a344c447-63bc-484e-b7b6-4cbe63f7da2e.png" 
-                  alt="Wilson Mokgethwa Moabelo - CEO & Founder" 
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                />
-              </div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">Mokgethwa Moabelo</h3>
+              <p className="text-purple-600 font-semibold mb-6">Founder & CEO</p>
+              
+              <blockquote className="text-lg text-gray-600 leading-relaxed italic">
+                "As an entrepreneur, I explored nearly every type of business imaginable. Through countless trials, errors, and financial losses, I came to realize that many other South Africans may be facing the same challenges daily.
+                <br /><br />
+                Struggling to complete tender documents, encountering constant roadblocks, and spending money on stationery with no return — it became clear that something needed to change. This inspired me to develop an automated business platform designed to save time and reduce the cost of filling out endless RFQs, especially for those operating without funding or support."
+              </blockquote>
             </div>
           </div>
         </div>
