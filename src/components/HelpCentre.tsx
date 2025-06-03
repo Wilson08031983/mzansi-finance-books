@@ -23,11 +23,11 @@ const HelpCentre = () => {
         <DialogHeader className="relative">
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute -top-2 -right-2 p-2 rounded-full hover:bg-gray-100 transition-all duration-200 group"
+            className="absolute -top-2 -right-2 p-2 rounded-full hover:bg-gray-100 transition-all duration-200 group z-10"
           >
-            <X className="h-4 w-4 text-gray-500 group-hover:text-gray-700" />
+            <X className="h-5 w-5 text-gray-500 group-hover:text-gray-700" />
           </button>
-          <DialogTitle className="text-2xl font-bold text-center text-gray-800 animate-slide-up">
+          <DialogTitle className="text-2xl font-bold text-center text-gray-800 animate-slide-up pt-4">
             Help Centre
           </DialogTitle>
         </DialogHeader>
