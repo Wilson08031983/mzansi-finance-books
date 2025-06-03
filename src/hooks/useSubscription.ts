@@ -7,6 +7,7 @@ interface Subscription {
   id: string;
   plan_type: string;
   status: string;
+  access_level: string;
   paystack_reference?: string;
   start_date: string;
   end_date?: string;
@@ -52,6 +53,7 @@ export const useSubscription = () => {
       user_id: user.id,
       plan_type: planType,
       status: planType === 'trial' ? 'trial' : 'active',
+      access_level: 'full',
       paystack_reference: paystackReference,
       end_date: planType === 'trial' 
         ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
@@ -79,7 +81,8 @@ export const useSubscription = () => {
         subscription_id: subscriptionId,
         paystack_reference: paystackReference,
         amount,
-        status: 'success'
+        status: 'success',
+        payment_date: new Date().toISOString()
       });
 
     if (error) throw error;

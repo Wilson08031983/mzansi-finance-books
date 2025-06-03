@@ -9,36 +9,99 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      failed_payment_notifications: {
+        Row: {
+          admin_email: string
+          created_at: string | null
+          id: string
+          notification_sent_at: string | null
+          payment_id: string | null
+          retry_attempts: number | null
+          subscription_id: string | null
+          user_email: string
+          user_id: string
+        }
+        Insert: {
+          admin_email: string
+          created_at?: string | null
+          id?: string
+          notification_sent_at?: string | null
+          payment_id?: string | null
+          retry_attempts?: number | null
+          subscription_id?: string | null
+          user_email: string
+          user_id: string
+        }
+        Update: {
+          admin_email?: string
+          created_at?: string | null
+          id?: string
+          notification_sent_at?: string | null
+          payment_id?: string | null
+          retry_attempts?: number | null
+          subscription_id?: string | null
+          user_email?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "failed_payment_notifications_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "failed_payment_notifications_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payments: {
         Row: {
+          admin_notified: boolean | null
           amount: number
           created_at: string | null
           currency: string | null
+          final_failure_date: string | null
           id: string
+          last_retry_date: string | null
           payment_date: string | null
           paystack_reference: string
+          retry_count: number | null
           status: string
           subscription_id: string | null
           user_id: string
         }
         Insert: {
+          admin_notified?: boolean | null
           amount: number
           created_at?: string | null
           currency?: string | null
+          final_failure_date?: string | null
           id?: string
+          last_retry_date?: string | null
           payment_date?: string | null
           paystack_reference: string
+          retry_count?: number | null
           status: string
           subscription_id?: string | null
           user_id: string
         }
         Update: {
+          admin_notified?: boolean | null
           amount?: number
           created_at?: string | null
           currency?: string | null
+          final_failure_date?: string | null
           id?: string
+          last_retry_date?: string | null
           payment_date?: string | null
           paystack_reference?: string
+          retry_count?: number | null
           status?: string
           subscription_id?: string | null
           user_id?: string
@@ -89,6 +152,7 @@ export type Database = {
       }
       subscriptions: {
         Row: {
+          access_level: string | null
           created_at: string | null
           end_date: string | null
           id: string
@@ -100,6 +164,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          access_level?: string | null
           created_at?: string | null
           end_date?: string | null
           id?: string
@@ -111,6 +176,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          access_level?: string | null
           created_at?: string | null
           end_date?: string | null
           id?: string
@@ -136,7 +202,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_subscription_access: {
+        Args: { user_uuid: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
