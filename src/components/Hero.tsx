@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle } from 'lucide-react';
@@ -37,7 +36,7 @@ const Hero = () => {
             </Link>
             <Link to="/demo">
               <Button size="lg" variant="outline" className="border-2 border-slate-300 text-slate-700 hover:bg-gradient-to-r hover:from-purple-400 hover:to-blue-500 hover:text-white hover:border-transparent px-8 py-4 text-lg font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-business hover:shadow-business-xl">
-                Watch Demo
+                Pay Now
               </Button>
             </Link>
           </div>
