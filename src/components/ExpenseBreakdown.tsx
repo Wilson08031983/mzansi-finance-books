@@ -8,13 +8,19 @@ interface ExpenseBreakdownProps {
   data: { label: string; value: number }[];
 }
 
-const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'];
+const MOKM_COLORS = [
+  '#f97316', // mokm-orange-500
+  '#e879f9', // mokm-pink-400
+  '#a855f7', // mokm-purple-500
+  '#3b82f6', // mokm-blue-500
+  '#06b6d4'  // cyan-500
+];
 
 const chartConfig = {
-  office: { label: "Office", color: "#6366f1" },
-  travel: { label: "Travel", color: "#8b5cf6" },
-  meals: { label: "Meals", color: "#ec4899" },
-  software: { label: "Software", color: "#f97316" },
+  office: { label: "Office", color: "#f97316" },
+  travel: { label: "Travel", color: "#e879f9" },
+  meals: { label: "Meals", color: "#a855f7" },
+  software: { label: "Software", color: "#3b82f6" },
   other: { label: "Other", color: "#06b6d4" },
 };
 
@@ -22,41 +28,77 @@ const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ data }) => {
   const total = data.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Expenses by Category</CardTitle>
+    <Card className="glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business hover:shadow-business-lg transition-all duration-300 animate-fade-in">
+      <CardHeader className="pb-6">
+        <CardTitle className="text-slate-900 font-sf-pro text-xl">Expenses by Category</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={280}>
             <PieChart>
+              <defs>
+                {MOKM_COLORS.map((color, index) => (
+                  <linearGradient key={index} id={`gradient${index}`} x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor={color} />
+                    <stop offset="100%" stopColor={`${color}80`} />
+                  </linearGradient>
+                ))}
+              </defs>
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
+                outerRadius={90}
+                innerRadius={30}
                 dataKey="value"
-                label={({ label, percent }) => `${label} ${(percent * 100).toFixed(0)}%`}
+                className="focus:outline-none"
               >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={`url(#gradient${index})`}
+                    className="hover:opacity-80 transition-opacity duration-300 cursor-pointer"
+                    stroke="rgba(255,255,255,0.2)"
+                    strokeWidth={2}
+                  />
                 ))}
               </Pie>
-              <ChartTooltip content={<ChartTooltipContent />} />
+              <ChartTooltip 
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    const data = payload[0];
+                    const percentage = ((data.value / total) * 100).toFixed(1);
+                    return (
+                      <div className="glass backdrop-blur-xl bg-white/90 border border-white/20 rounded-xl shadow-business p-3">
+                        <p className="font-medium text-slate-900 font-sf-pro">{data.payload.label}</p>
+                        <p className="text-sm text-slate-600 font-sf-pro">
+                          R {data.value.toLocaleString()} ({percentage}%)
+                        </p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>
-        <div className="mt-4 space-y-2">
+        <div className="mt-6 space-y-3">
           {data.map((item, index) => (
-            <div key={item.label} className="flex items-center justify-between text-sm">
+            <div key={item.label} className="flex items-center justify-between text-sm glass backdrop-blur-sm bg-white/30 rounded-xl p-3 hover:bg-white/40 transition-all duration-300">
               <div className="flex items-center">
                 <div 
-                  className="w-3 h-3 rounded-full mr-2" 
-                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                  className="w-4 h-4 rounded-full mr-3 shadow-sm" 
+                  style={{ backgroundColor: MOKM_COLORS[index % MOKM_COLORS.length] }}
                 />
-                <span>{item.label}</span>
+                <span className="text-slate-700 font-medium font-sf-pro">{item.label}</span>
               </div>
-              <span className="font-medium">R {item.value.toLocaleString()}</span>
+              <div className="flex items-center space-x-2">
+                <span className="font-semibold text-slate-900 font-sf-pro">R {item.value.toLocaleString()}</span>
+                <span className="text-xs text-slate-500 font-sf-pro">
+                  {((item.value / total) * 100).toFixed(1)}%
+                </span>
+              </div>
             </div>
           ))}
         </div>
