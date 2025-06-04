@@ -18,6 +18,7 @@ import {
 const sidebarItems = [
   { title: 'Dashboard', icon: BarChart3, href: '/dashboard' },
   { title: 'My Company', icon: Building2, href: '/company' },
+  { title: 'Clients', icon: Users, href: '/clients' },
   { title: 'Invoices', icon: FileText, href: '/invoices' },
   { title: 'Quotations', icon: Receipt, href: '/quotations' },
   { title: 'Expenses', icon: Wallet, href: '/expenses' },
