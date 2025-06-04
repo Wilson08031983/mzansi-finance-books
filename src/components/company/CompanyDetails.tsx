@@ -2,19 +2,24 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Edit, Save, X, Upload, Trash2 } from 'lucide-react';
 
 const CompanyDetails = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [companyData, setCompanyData] = useState({
     name: 'MOK Mzansi Books',
+    contactName: '',
+    contactSurname: '',
+    position: '',
     email: 'info@mokmzansibooks.com',
     phone: '+27 11 123 4567',
     website: 'www.mokmzansibooks.com',
     address: '123 Business Street, Johannesburg, 2000',
     regNumber: '2024/123456/07',
     vatNumber: '4123456789',
-    taxNumber: 'TAX123456789'
+    taxNumber: 'TAX123456789',
+    maaarNumber: ''
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -65,20 +70,70 @@ const CompanyDetails = () => {
           )}
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Company Name</label>
+            {isEditing ? (
+              <input
+                type="text"
+                value={companyData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
+              />
+            ) : (
+              <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.name}</p>
+            )}
+          </div>
+          
+          {/* Contact Person Details */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Company Name</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Name</label>
               {isEditing ? (
                 <input
                   type="text"
-                  value={companyData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  value={companyData.contactName}
+                  onChange={(e) => handleInputChange('contactName', e.target.value)}
                   className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
                 />
               ) : (
-                <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.name}</p>
+                <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.contactName || 'Not specified'}</p>
               )}
             </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Surname</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={companyData.contactSurname}
+                  onChange={(e) => handleInputChange('contactSurname', e.target.value)}
+                  className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
+                />
+              ) : (
+                <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.contactSurname || 'Not specified'}</p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Position</label>
+              {isEditing ? (
+                <Select value={companyData.position} onValueChange={(value) => handleInputChange('position', value)}>
+                  <SelectTrigger className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro">
+                    <SelectValue placeholder="Select position" />
+                  </SelectTrigger>
+                  <SelectContent className="glass backdrop-blur-sm bg-white/95 border border-white/20 rounded-xl">
+                    <SelectItem value="CEO">CEO</SelectItem>
+                    <SelectItem value="Manager">Manager</SelectItem>
+                    <SelectItem value="Bookkeeper">Bookkeeper</SelectItem>
+                    <SelectItem value="Director">Director</SelectItem>
+                    <SelectItem value="Founder">Founder</SelectItem>
+                  </SelectContent>
+                </Select>
+              ) : (
+                <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.position || 'Not specified'}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Email</label>
               {isEditing ? (
@@ -132,7 +187,7 @@ const CompanyDetails = () => {
               <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.address}</p>
             )}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Registration Number</label>
               {isEditing ? (
@@ -170,6 +225,19 @@ const CompanyDetails = () => {
                 />
               ) : (
                 <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.taxNumber}</p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">MAAA Registration Number</label>
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={companyData.maaarNumber}
+                  onChange={(e) => handleInputChange('maaarNumber', e.target.value)}
+                  className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
+                />
+              ) : (
+                <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.maaarNumber || 'Not specified'}</p>
               )}
             </div>
           </div>
