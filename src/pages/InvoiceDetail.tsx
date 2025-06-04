@@ -27,7 +27,48 @@ import {
   User
 } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatters';
-import { Invoice, InvoiceStatus, InvoiceItem } from '@/pages/Invoices';
+
+export type InvoiceStatus = 'draft' | 'sent' | 'viewed' | 'partial' | 'paid' | 'overdue' | 'cancelled';
+
+export interface InvoiceItem {
+  id: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  taxRate: number;
+  discount?: number;
+  total: number;
+}
+
+export interface InvoiceAttachment {
+  id: string;
+  fileName: string;
+  fileSize: number;
+  url: string;
+  uploadedAt: string;
+}
+
+export interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  clientId: string;
+  clientName: string;
+  issueDate: string;
+  dueDate: string;
+  status: InvoiceStatus;
+  items: InvoiceItem[];
+  subtotal: number;
+  taxAmount: number;
+  discount: number;
+  total: number;
+  notes?: string;
+  terms?: string;
+  createdAt: string;
+  updatedAt: string;
+  paymentDate?: string;
+  isPaid: boolean;
+  attachments?: InvoiceAttachment[];
+}
 
 // Get status badge color based on status
 const getStatusColor = (status: InvoiceStatus | undefined): string => {
@@ -77,44 +118,52 @@ const getStatusIcon = (status: InvoiceStatus | undefined) => {
 const getSampleInvoice = (id: string): Invoice => {
   return {
     id,
-    number: 'INV-2023-001',
+    invoiceNumber: 'INV-2023-001',
     clientId: '1',
     clientName: 'Acme Corporation',
-    clientEmail: 'billing@acme.com',
-    invoiceDate: '2023-06-01',
+    issueDate: '2023-06-01',
     dueDate: '2023-06-15',
     status: 'sent' as InvoiceStatus,
-    amount: 8625,
-    paidAmount: 0,
-    balance: 8625,
-    currency: 'ZAR',
     items: [
       {
         id: '1',
         description: 'Web Development',
         quantity: 40,
-        rate: 120,
-        amount: 4800
+        unitPrice: 120,
+        taxRate: 15,
+        discount: 0,
+        total: 40 * 120
       },
       {
         id: '2',
         description: 'UI/UX Design',
         quantity: 20,
-        rate: 100,
-        amount: 2000
+        unitPrice: 100,
+        taxRate: 15,
+        discount: 0,
+        total: 20 * 100
       },
       {
         id: '3',
         description: 'Project Management',
         quantity: 10,
-        rate: 150,
-        amount: 1500
+        unitPrice: 150,
+        taxRate: 15,
+        discount: 0,
+        total: 10 * 150
       }
     ],
+    subtotal: 7500,
+    taxAmount: 1125,
+    discount: 0,
+    total: 8625,
     notes: 'Thank you for your business.',
     terms: 'Payment due within 15 days.',
     createdAt: '2023-06-01',
-    updatedAt: '2023-06-01'
+    updatedAt: '2023-06-01',
+    paymentDate: '',
+    isPaid: false,
+    attachments: []
   };
 };
 
@@ -161,7 +210,7 @@ const InvoiceDetail: React.FC = () => {
       const updatedInvoice = { ...invoice!, status: 'sent' as InvoiceStatus };
       setInvoice(updatedInvoice);
       
-      console.log(`Invoice ${invoice?.number} sent successfully`);
+      console.log(`Invoice ${invoice?.invoiceNumber} sent successfully`);
     } catch (err) {
       console.error('Error sending invoice:', err);
     } finally {
@@ -181,12 +230,12 @@ const InvoiceDetail: React.FC = () => {
       const updatedInvoice = { 
         ...invoice!, 
         status: 'paid' as InvoiceStatus, 
-        paidAmount: invoice!.amount,
-        balance: 0
+        paymentDate: new Date().toISOString(),
+        isPaid: true
       };
       setInvoice(updatedInvoice);
       
-      console.log(`Invoice ${invoice?.number} marked as paid`);
+      console.log(`Invoice ${invoice?.invoiceNumber} marked as paid`);
     } catch (error) {
       console.error('Error updating invoice:', error);
     } finally {
@@ -203,7 +252,7 @@ const InvoiceDetail: React.FC = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      console.log(`Invoice ${invoice?.number} downloaded`);
+      console.log(`Invoice ${invoice?.invoiceNumber} downloaded`);
     } catch (err) {
       console.error('Error downloading invoice:', err);
     } finally {
@@ -221,7 +270,7 @@ const InvoiceDetail: React.FC = () => {
       
       window.print();
       
-      console.log(`Invoice ${invoice?.number} sent to printer`);
+      console.log(`Invoice ${invoice?.invoiceNumber} sent to printer`);
     } catch (err) {
       console.error('Error printing invoice:', err);
     } finally {
@@ -255,7 +304,7 @@ const InvoiceDetail: React.FC = () => {
     );
   }
 
-  const subtotal = invoice.items.reduce((sum, item) => sum + item.amount, 0);
+  const subtotal = invoice.items.reduce((sum, item) => sum + item.total, 0);
   const taxAmount = subtotal * 0.15; // 15% tax
   const total = subtotal + taxAmount;
   
@@ -268,7 +317,7 @@ const InvoiceDetail: React.FC = () => {
               <ArrowLeft className="h-5 w-5 text-slate-500" />
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 font-sf-pro">Invoice #{invoice.number}</h1>
+              <h1 className="text-2xl font-bold text-slate-900 font-sf-pro">Invoice #{invoice.invoiceNumber}</h1>
               <p className="text-slate-600 font-sf-pro">Invoice for {invoice.clientName}</p>
             </div>
           </div>
@@ -416,7 +465,7 @@ const InvoiceDetail: React.FC = () => {
                         Qty
                       </th>
                       <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider font-sf-pro">
-                        Rate
+                        Unit Price
                       </th>
                       <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider font-sf-pro">
                         Amount
@@ -433,10 +482,10 @@ const InvoiceDetail: React.FC = () => {
                           {item.quantity}
                         </td>
                         <td className="px-6 py-4 text-right text-slate-900 font-sf-pro">
-                          {formatCurrency(item.rate)}
+                          {formatCurrency(item.unitPrice)}
                         </td>
                         <td className="px-6 py-4 text-right font-medium text-slate-900 font-sf-pro">
-                          {formatCurrency(item.amount)}
+                          {formatCurrency(item.total)}
                         </td>
                       </tr>
                     ))}
@@ -449,16 +498,16 @@ const InvoiceDetail: React.FC = () => {
                   <div className="w-full md:w-64">
                     <div className="flex justify-between items-center py-2">
                       <div className="text-base text-slate-600 font-sf-pro">Subtotal</div>
-                      <div className="text-base font-medium text-slate-900 font-sf-pro">{formatCurrency(subtotal)}</div>
+                      <div className="text-base font-medium text-slate-900 font-sf-pro">{formatCurrency(invoice.subtotal)}</div>
                     </div>
                     
                     <div className="flex justify-between py-2 text-slate-600">
                       <span className="font-sf-pro">Tax (15%):</span>
-                      <span className="font-sf-pro">{formatCurrency(taxAmount)}</span>
+                      <span className="font-sf-pro">{formatCurrency(invoice.taxAmount)}</span>
                     </div>
                     <div className="flex justify-between py-2 font-bold text-lg border-t border-slate-200 mt-2 pt-2 text-slate-900">
                       <span className="font-sf-pro">Total:</span>
-                      <span className="font-sf-pro">{formatCurrency(total)}</span>
+                      <span className="font-sf-pro">{formatCurrency(invoice.total)}</span>
                     </div>
                   </div>
                 </div>
@@ -504,11 +553,6 @@ const InvoiceDetail: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-sm font-medium text-slate-700 font-sf-pro">Email</h3>
-                  <p className="text-sm text-slate-600 font-sf-pro">{invoice.clientEmail}</p>
-                </div>
-                
-                <div>
                   <h3 className="text-sm font-medium text-slate-700 font-sf-pro">Client ID</h3>
                   <p className="text-sm text-slate-600 font-sf-pro">{invoice.clientId}</p>
                 </div>
@@ -521,8 +565,8 @@ const InvoiceDetail: React.FC = () => {
               
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-sm font-medium text-slate-700 font-sf-pro">Invoice Date</h3>
-                  <p className="text-sm text-slate-600 font-sf-pro">{new Date(invoice.invoiceDate).toLocaleDateString('en-ZA')}</p>
+                  <h3 className="text-sm font-medium text-slate-700 font-sf-pro">Issue Date</h3>
+                  <p className="text-sm text-slate-600 font-sf-pro">{new Date(invoice.issueDate).toLocaleDateString('en-ZA')}</p>
                 </div>
                 
                 <div>
@@ -532,13 +576,15 @@ const InvoiceDetail: React.FC = () => {
                 
                 <div>
                   <h3 className="text-sm font-medium text-slate-700 font-sf-pro">Amount</h3>
-                  <p className="text-lg font-semibold text-slate-900 font-sf-pro">{formatCurrency(invoice.amount)}</p>
+                  <p className="text-lg font-semibold text-slate-900 font-sf-pro">{formatCurrency(invoice.total)}</p>
                 </div>
                 
-                <div>
-                  <h3 className="text-sm font-medium text-slate-700 font-sf-pro">Balance</h3>
-                  <p className="text-lg font-semibold text-slate-900 font-sf-pro">{formatCurrency(invoice.balance)}</p>
-                </div>
+                {invoice.paymentDate && (
+                  <div>
+                    <h3 className="text-sm font-medium text-slate-700 font-sf-pro">Payment Date</h3>
+                    <p className="text-sm text-slate-600 font-sf-pro">{new Date(invoice.paymentDate).toLocaleDateString('en-ZA')}</p>
+                  </div>
+                )}
               </div>
             </div>
             
@@ -603,6 +649,34 @@ const InvoiceDetail: React.FC = () => {
                   </button>
                 )}
               </div>
+            </div>
+            
+            {/* Attachments Card - Simple placeholder without Supabase */}
+            <div className="glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business rounded-lg p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-medium text-slate-900 font-sf-pro">Attachments</h2>
+                <div className="text-sm text-slate-500 font-sf-pro">
+                  {invoice.attachments?.length || 0} file(s)
+                </div>
+              </div>
+              
+              {(!invoice.attachments || invoice.attachments.length === 0) ? (
+                <div className="text-center py-4">
+                  <Paperclip className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                  <p className="text-sm text-slate-500 font-sf-pro">No attachments</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {invoice.attachments.map((attachment) => (
+                    <div key={attachment.id} className="flex items-center justify-between p-2 bg-white/50 rounded">
+                      <span className="text-sm font-sf-pro">{attachment.fileName}</span>
+                      <button className="text-blue-600 hover:text-blue-800 text-sm font-sf-pro">
+                        Download
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
