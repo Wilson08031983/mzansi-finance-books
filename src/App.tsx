@@ -27,6 +27,8 @@ import Company from "./pages/Company";
 import Payment from "./pages/Payment";
 import Invoices from "./pages/Invoices";
 import InvoiceDetail from "./pages/InvoiceDetail";
+import ClientList from "./pages/ClientList";
+import HRManagement from "./pages/HRManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -74,6 +76,22 @@ const App = () => (
               element={
                 <AccessGuard>
                   <Clients />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/clients-list" 
+              element={
+                <AccessGuard>
+                  <ClientList />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/hr-management" 
+              element={
+                <AccessGuard>
+                  <HRManagement />
                 </AccessGuard>
               } 
             />
