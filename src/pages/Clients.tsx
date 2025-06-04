@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { 
   Plus, 
   Search, 
@@ -24,7 +25,8 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
-  XCircle
+  XCircle,
+  ArrowLeft
 } from 'lucide-react';
 import ClientsTable from '@/components/clients/ClientsTable';
 import ClientsGrid from '@/components/clients/ClientsGrid';
@@ -155,9 +157,20 @@ const Clients = () => {
       <div className="max-w-7xl mx-auto p-6 space-y-8">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900 font-sf-pro">Clients</h1>
-            <p className="text-slate-600 font-sf-pro">Manage your business clients and their information</p>
+          <div className="flex items-center space-x-4">
+            <Link to="/dashboard">
+              <Button
+                variant="outline"
+                className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Dashboard
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-3xl font-bold text-slate-900 font-sf-pro">Clients</h1>
+              <p className="text-slate-600 font-sf-pro">Manage your business clients and their information</p>
+            </div>
           </div>
           
           <div className="flex items-center space-x-3">
