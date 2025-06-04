@@ -14,6 +14,7 @@ import HRDashboard from '@/components/hr/HRDashboard';
 import EmployeeManagement from '@/components/hr/EmployeeManagement';
 import EmployeeDirectory from '@/components/hr/EmployeeDirectory';
 import LeaveManagement from '@/components/hr/LeaveManagement';
+import PayrollManagement from '@/components/hr/PayrollManagement';
 import ModulePlaceholder from '@/components/hr/ModulePlaceholder';
 
 interface Employee {
@@ -318,13 +319,7 @@ const HRManagement: React.FC = () => {
               icon={<Target className="h-8 w-8 text-white" />}
             />
           )}
-          {activeTab === 'payroll' && (
-            <ModulePlaceholder
-              title="Payroll Management"
-              description="Process payroll, manage compensation, and handle tax calculations."
-              icon={<DollarSign className="h-8 w-8 text-white" />}
-            />
-          )}
+          {activeTab === 'payroll' && <PayrollManagement />}
         </div>
       </div>
     </div>
