@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
@@ -68,7 +67,7 @@ const Header = () => {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-700">Welcome, {user.email}</span>
+                <span className="text-sm font-bold text-gray-700">Welcome, {user.email}</span>
                 <Link to="/dashboard">
                   <Button size="sm" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
                     Dashboard
@@ -91,7 +90,7 @@ const Header = () => {
                   </Button>
                 </Link>
                 <Link to="/signup">
-                  <Button size="sm" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <Button size="sm" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
                     Get Started
                   </Button>
                 </Link>
@@ -147,7 +146,7 @@ const Header = () => {
             </Link>
             {user ? (
               <div className="px-3 py-2 space-y-2">
-                <div className="text-gray-700 text-sm">Welcome, {user.email}</div>
+                <div className="text-sm font-bold text-gray-700">Welcome, {user.email}</div>
                 <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
                   <Button size="sm" className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
                     Dashboard
