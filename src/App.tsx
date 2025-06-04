@@ -1,29 +1,29 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import AccessGuard from "@/components/AccessGuard";
 import Index from "./pages/Index";
+import Pricing from "./pages/Pricing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
-import Features from "./pages/Features";
-import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
 import ContactSales from "./pages/ContactSales";
-import Demo from "./pages/Demo";
-import Integrations from "./pages/Integrations";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import Payment from "./pages/Payment";
+import Demo from "./pages/Demo";
 import ThankYou from "./pages/ThankYou";
-import Company from "./pages/Company";
-import Clients from "./pages/Clients";
-import Quotations from "./pages/Quotations";
+import Features from "./pages/Features";
+import Integrations from "./pages/Integrations";
 import AcceptInvitation from "./pages/AcceptInvitation";
+import Dashboard from "./pages/Dashboard";
+import Quotations from "./pages/Quotations";
+import QuotationDetail from "./pages/QuotationDetail";
+import Clients from "./pages/Clients";
+import Company from "./pages/Company";
+import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,7 +33,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <Router>
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -82,10 +82,18 @@ const App = () => (
                 </AccessGuard>
               } 
             />
+            <Route 
+              path="/quotations/:id" 
+              element={
+                <AccessGuard>
+                  <QuotationDetail />
+                </AccessGuard>
+              } 
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
-      </BrowserRouter>
+      </Router>
     </TooltipProvider>
   </QueryClientProvider>
 );

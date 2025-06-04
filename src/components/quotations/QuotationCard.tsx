@@ -1,19 +1,14 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
   MoreVertical,
-  Eye,
-  Edit,
-  Copy,
-  Mail,
-  Download,
-  Trash2,
-  Receipt,
   Calendar,
   User
 } from 'lucide-react';
+import { formatCurrency, formatDate } from '@/utils/formatters';
 import QuotationCardMenu from './QuotationCardMenu';
 import QuotationCardActions from './QuotationCardActions';
 
@@ -48,7 +43,12 @@ const QuotationCard: React.FC<QuotationCardProps> = ({
               className="rounded border-slate-300 text-mokm-purple-600 focus:ring-mokm-purple-500"
             />
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 font-sf-pro">{quotation.number}</h3>
+              <Link 
+                to={`/quotations/${quotation.id}`}
+                className="text-lg font-semibold text-mokm-purple-600 hover:text-mokm-purple-700 hover:underline font-sf-pro"
+              >
+                {quotation.number}
+              </Link>
               <p className="text-sm text-slate-500 font-sf-pro">{quotation.reference}</p>
             </div>
           </div>
@@ -77,7 +77,7 @@ const QuotationCard: React.FC<QuotationCardProps> = ({
               <span className="ml-1 capitalize">{quotation.status}</span>
             </span>
             <span className="text-lg font-bold text-slate-900 font-sf-pro">
-              R {quotation.amount.toLocaleString()}
+              {formatCurrency(quotation.amount)}
             </span>
           </div>
 
@@ -88,11 +88,11 @@ const QuotationCard: React.FC<QuotationCardProps> = ({
             </div>
             <div className="flex items-center text-sm text-slate-600">
               <Calendar className="h-4 w-4 mr-2" />
-              <span className="font-sf-pro">{new Date(quotation.date).toLocaleDateString()}</span>
+              <span className="font-sf-pro">{formatDate(quotation.date)}</span>
             </div>
             <div className="flex items-center text-sm text-slate-600">
               <Calendar className="h-4 w-4 mr-2" />
-              <span className="font-sf-pro">Expires: {new Date(quotation.expiryDate).toLocaleDateString()}</span>
+              <span className="font-sf-pro">Expires: {formatDate(quotation.expiryDate)}</span>
             </div>
           </div>
 
