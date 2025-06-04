@@ -29,6 +29,7 @@ import Invoices from "./pages/Invoices";
 import InvoiceDetail from "./pages/InvoiceDetail";
 import ClientList from "./pages/ClientList";
 import HRManagement from "./pages/HRManagement";
+import Accounting from "./pages/Accounting";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -92,6 +93,14 @@ const App = () => (
               element={
                 <AccessGuard>
                   <HRManagement />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/accounting" 
+              element={
+                <AccessGuard>
+                  <Accounting />
                 </AccessGuard>
               } 
             />
