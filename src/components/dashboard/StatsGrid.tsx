@@ -24,9 +24,13 @@ const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
         <Card key={index} className={`glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business hover:shadow-business-lg transition-all duration-500 hover-lift animate-fade-in delay-${index * 100} group`}>
           <CardContent className="p-8">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="flex-1">
                 <p className="text-sm font-medium text-slate-600 font-sf-pro">{stat.name}</p>
-                <p className="text-3xl font-bold text-slate-900 mt-3 font-sf-pro">{stat.value}</p>
+                <div className="mt-3">
+                  <p className={`${stat.name === 'Total Revenue' ? 'text-2xl' : 'text-3xl'} font-bold text-slate-900 font-sf-pro`}>
+                    {stat.value}
+                  </p>
+                </div>
                 {stat.change && (
                   <p className={`text-sm mt-2 flex items-center font-medium font-sf-pro ${stat.color}`}>
                     {stat.trend === 'up' ? (
