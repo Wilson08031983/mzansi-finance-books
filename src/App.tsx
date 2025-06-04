@@ -21,6 +21,7 @@ import Privacy from "./pages/Privacy";
 import Payment from "./pages/Payment";
 import ThankYou from "./pages/ThankYou";
 import Company from "./pages/Company";
+import Clients from "./pages/Clients";
 import AcceptInvitation from "./pages/AcceptInvitation";
 import NotFound from "./pages/NotFound";
 
@@ -61,6 +62,14 @@ const App = () => (
               element={
                 <AccessGuard>
                   <Company />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/clients" 
+              element={
+                <AccessGuard>
+                  <Clients />
                 </AccessGuard>
               } 
             />

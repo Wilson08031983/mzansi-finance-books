@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   Settings,
   LogOut,
@@ -16,13 +16,13 @@ import {
 } from 'lucide-react';
 
 const sidebarItems = [
-  { title: 'Dashboard', active: true, icon: BarChart3, href: '/dashboard' },
-  { title: 'My Company', active: false, icon: Building2, href: '/company' },
-  { title: 'Invoices', active: false, icon: FileText, href: '/invoices' },
-  { title: 'Clients', active: false, icon: Users, href: '/clients' },
-  { title: 'Quotations', active: false, icon: Receipt, href: '/quotations' },
-  { title: 'Expenses', active: false, icon: Wallet, href: '/expenses' },
-  { title: 'Reports', active: false, icon: PieChart, href: '/reports' },
+  { title: 'Dashboard', icon: BarChart3, href: '/dashboard' },
+  { title: 'My Company', icon: Building2, href: '/company' },
+  { title: 'Invoices', icon: FileText, href: '/invoices' },
+  { title: 'Clients', icon: Users, href: '/clients' },
+  { title: 'Quotations', icon: Receipt, href: '/quotations' },
+  { title: 'Expenses', icon: Wallet, href: '/expenses' },
+  { title: 'Reports', icon: PieChart, href: '/reports' },
 ];
 
 interface DashboardSidebarProps {
@@ -31,6 +31,8 @@ interface DashboardSidebarProps {
 }
 
 const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
+  const location = useLocation();
+
   return (
     <div className={`fixed inset-y-0 left-0 z-50 w-72 glass backdrop-blur-xl bg-white/80 border-r border-white/20 shadow-business-xl transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-all duration-500 ease-out lg:translate-x-0 lg:static lg:inset-0`}>
       <div className="flex items-center justify-between h-20 px-6 border-b border-white/10">
@@ -56,21 +58,24 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ sidebarOpen, setSid
 
       <nav className="mt-8 px-4">
         <ul className="space-y-2">
-          {sidebarItems.map((item, index) => (
-            <li key={index} className={`animate-fade-in delay-${100 + index * 100}`}>
-              <Link
-                to={item.href}
-                className={`group flex items-center px-4 py-4 text-sm font-medium rounded-xl transition-all duration-300 hover-lift ${
-                  item.active 
-                    ? 'bg-gradient-to-r from-mokm-orange-500 via-mokm-pink-500 to-mokm-purple-500 text-white shadow-colored-lg' 
-                    : 'text-slate-700 hover:bg-white/50 hover:shadow-business'
-                }`}
-              >
-                <item.icon className={`h-5 w-5 mr-4 ${item.active ? 'text-white' : 'text-slate-500 group-hover:text-mokm-purple-600'} transition-colors`} />
-                <span className="font-sf-pro">{item.title}</span>
-              </Link>
-            </li>
-          ))}
+          {sidebarItems.map((item, index) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <li key={index} className={`animate-fade-in delay-${100 + index * 100}`}>
+                <Link
+                  to={item.href}
+                  className={`group flex items-center px-4 py-4 text-sm font-medium rounded-xl transition-all duration-300 hover-lift ${
+                    isActive 
+                      ? 'bg-gradient-to-r from-mokm-orange-500 via-mokm-pink-500 to-mokm-purple-500 text-white shadow-colored-lg' 
+                      : 'text-slate-700 hover:bg-white/50 hover:shadow-business'
+                  }`}
+                >
+                  <item.icon className={`h-5 w-5 mr-4 ${isActive ? 'text-white' : 'text-slate-500 group-hover:text-mokm-purple-600'} transition-colors`} />
+                  <span className="font-sf-pro">{item.title}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
