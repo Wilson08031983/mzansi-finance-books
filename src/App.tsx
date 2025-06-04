@@ -32,6 +32,7 @@ import HRManagement from "./pages/HRManagement";
 import Accounting from "./pages/Accounting";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
