@@ -30,6 +30,7 @@ import InvoiceDetail from "./pages/InvoiceDetail";
 import ClientList from "./pages/ClientList";
 import HRManagement from "./pages/HRManagement";
 import Accounting from "./pages/Accounting";
+import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -101,6 +102,14 @@ const App = () => (
               element={
                 <AccessGuard>
                   <Accounting />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/projects" 
+              element={
+                <AccessGuard>
+                  <Projects />
                 </AccessGuard>
               } 
             />

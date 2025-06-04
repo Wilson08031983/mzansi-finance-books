@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
@@ -13,7 +14,8 @@ import {
   PieChart,
   Building2,
   UserCheck,
-  Calculator
+  Calculator,
+  Briefcase
 } from 'lucide-react';
 
 const sidebarItems = [
