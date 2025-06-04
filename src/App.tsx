@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,6 +25,8 @@ import QuotationDetail from "./pages/QuotationDetail";
 import Clients from "./pages/Clients";
 import Company from "./pages/Company";
 import Payment from "./pages/Payment";
+import Invoices from "./pages/Invoices";
+import InvoiceDetail from "./pages/InvoiceDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -87,6 +90,22 @@ const App = () => (
               element={
                 <AccessGuard>
                   <QuotationDetail />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/invoices" 
+              element={
+                <AccessGuard>
+                  <Invoices />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/invoices/:id" 
+              element={
+                <AccessGuard>
+                  <InvoiceDetail />
                 </AccessGuard>
               } 
             />
