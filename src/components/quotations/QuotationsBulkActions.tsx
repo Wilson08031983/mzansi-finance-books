@@ -14,6 +14,7 @@ import {
   FileText
 } from 'lucide-react';
 import ConvertToInvoiceModal from './ConvertToInvoiceModal';
+import DuplicateQuotationModal from './DuplicateQuotationModal';
 
 interface QuotationsBulkActionsProps {
   selectedCount: number;
@@ -27,6 +28,7 @@ const QuotationsBulkActions: React.FC<QuotationsBulkActionsProps> = ({
   onClearSelection
 }) => {
   const [convertModalOpen, setConvertModalOpen] = useState(false);
+  const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
 
   const handleBulkAction = (action: string) => {
     console.log(`Bulk action: ${action}`, selectedQuotations);
@@ -36,6 +38,10 @@ const QuotationsBulkActions: React.FC<QuotationsBulkActionsProps> = ({
         // For bulk conversion, we'll show a different modal or process
         // For now, let's show an alert
         alert(`Converting ${selectedCount} accepted quotations to invoices...`);
+        break;
+      case 'duplicate':
+        // For bulk duplication
+        alert(`Duplicating ${selectedCount} quotations...`);
         break;
       case 'send':
         alert(`Sending ${selectedCount} quotations...`);
@@ -193,6 +199,12 @@ const QuotationsBulkActions: React.FC<QuotationsBulkActionsProps> = ({
       <ConvertToInvoiceModal
         isOpen={convertModalOpen}
         onClose={() => setConvertModalOpen(false)}
+        quotation={null}
+      />
+
+      <DuplicateQuotationModal
+        isOpen={duplicateModalOpen}
+        onClose={() => setDuplicateModalOpen(false)}
         quotation={null}
       />
     </>

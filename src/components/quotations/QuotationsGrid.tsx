@@ -16,6 +16,7 @@ import {
   User
 } from 'lucide-react';
 import ConvertToInvoiceModal from './ConvertToInvoiceModal';
+import DuplicateQuotationModal from './DuplicateQuotationModal';
 
 interface QuotationsGridProps {
   quotations: any[];
@@ -33,11 +34,17 @@ const QuotationsGrid: React.FC<QuotationsGridProps> = ({
   getStatusColor
 }) => {
   const [convertModalOpen, setConvertModalOpen] = useState(false);
-  const [selectedQuotationForConvert, setSelectedQuotationForConvert] = useState<any>(null);
+  const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
+  const [selectedQuotationForAction, setSelectedQuotationForAction] = useState<any>(null);
 
   const handleConvertToInvoice = (quotation: any) => {
-    setSelectedQuotationForConvert(quotation);
+    setSelectedQuotationForAction(quotation);
     setConvertModalOpen(true);
+  };
+
+  const handleDuplicate = (quotation: any) => {
+    setSelectedQuotationForAction(quotation);
+    setDuplicateModalOpen(true);
   };
 
   const handleQuotationAction = (action: string, quotation: any) => {
@@ -51,7 +58,7 @@ const QuotationsGrid: React.FC<QuotationsGridProps> = ({
         // Navigate to quotation edit
         break;
       case 'duplicate':
-        // Duplicate quotation
+        handleDuplicate(quotation);
         break;
       case 'send':
         // Send quotation
@@ -202,6 +209,15 @@ const QuotationsGrid: React.FC<QuotationsGridProps> = ({
                     <Edit className="h-4 w-4 mr-1" />
                     Edit
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleQuotationAction('duplicate', quotation)}
+                    className="flex-1 text-blue-600 hover:text-blue-700 hover:border-blue-300 font-sf-pro"
+                  >
+                    <Copy className="h-4 w-4 mr-1" />
+                    Copy
+                  </Button>
                   {quotation.status === 'accepted' && (
                     <Button
                       variant="outline"
@@ -223,7 +239,13 @@ const QuotationsGrid: React.FC<QuotationsGridProps> = ({
       <ConvertToInvoiceModal
         isOpen={convertModalOpen}
         onClose={() => setConvertModalOpen(false)}
-        quotation={selectedQuotationForConvert}
+        quotation={selectedQuotationForAction}
+      />
+
+      <DuplicateQuotationModal
+        isOpen={duplicateModalOpen}
+        onClose={() => setDuplicateModalOpen(false)}
+        quotation={selectedQuotationForAction}
       />
     </>
   );

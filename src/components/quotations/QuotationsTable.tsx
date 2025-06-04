@@ -10,10 +10,14 @@ import {
   Download,
   Trash2,
   Receipt,
+  Calendar,
+  DollarSign,
+  User,
   SortAsc,
   SortDesc
 } from 'lucide-react';
 import ConvertToInvoiceModal from './ConvertToInvoiceModal';
+import DuplicateQuotationModal from './DuplicateQuotationModal';
 
 interface QuotationsTableProps {
   quotations: any[];
@@ -39,11 +43,17 @@ const QuotationsTable: React.FC<QuotationsTableProps> = ({
   onSort
 }) => {
   const [convertModalOpen, setConvertModalOpen] = useState(false);
-  const [selectedQuotationForConvert, setSelectedQuotationForConvert] = useState<any>(null);
+  const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
+  const [selectedQuotationForAction, setSelectedQuotationForAction] = useState<any>(null);
 
   const handleConvertToInvoice = (quotation: any) => {
-    setSelectedQuotationForConvert(quotation);
+    setSelectedQuotationForAction(quotation);
     setConvertModalOpen(true);
+  };
+
+  const handleDuplicate = (quotation: any) => {
+    setSelectedQuotationForAction(quotation);
+    setDuplicateModalOpen(true);
   };
 
   const handleQuotationAction = (action: string, quotation: any) => {
@@ -57,7 +67,7 @@ const QuotationsTable: React.FC<QuotationsTableProps> = ({
         // Navigate to quotation edit
         break;
       case 'duplicate':
-        // Duplicate quotation
+        handleDuplicate(quotation);
         break;
       case 'send':
         // Send quotation
@@ -78,9 +88,7 @@ const QuotationsTable: React.FC<QuotationsTableProps> = ({
 
   const getSortIcon = (column: string) => {
     if (sortColumn !== column) return null;
-    return sortDirection === 'asc' ? 
-      <SortAsc className="h-4 w-4 ml-1" /> : 
-      <SortDesc className="h-4 w-4 ml-1" />;
+    return sortDirection === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />;
   };
 
   return (
@@ -89,64 +97,62 @@ const QuotationsTable: React.FC<QuotationsTableProps> = ({
         <table className="min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-6 py-3 text-left">
+              <th scope="col" className="relative px-6 py-3 text-left">
                 <input
                   type="checkbox"
-                  checked={selectedQuotations.length === quotations.length && quotations.length > 0}
+                  checked={quotations.length > 0 && selectedQuotations.length === quotations.length}
                   onChange={onSelectAll}
                   className="rounded border-slate-300 text-mokm-purple-600 focus:ring-mokm-purple-500"
                 />
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100 font-sf-pro"
+                scope="col" 
+                className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100"
                 onClick={() => onSort('number')}
               >
-                <div className="flex items-center">
-                  Quotation Number
+                <div className="flex items-center space-x-1">
+                  <span className="font-sf-pro">Quotation #</span>
                   {getSortIcon('number')}
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100 font-sf-pro"
+                scope="col" 
+                className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100"
                 onClick={() => onSort('client')}
               >
-                <div className="flex items-center">
-                  Client
+                <div className="flex items-center space-x-1">
+                  <span className="font-sf-pro">Client</span>
                   {getSortIcon('client')}
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100 font-sf-pro"
+                scope="col" 
+                className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100"
                 onClick={() => onSort('date')}
               >
-                <div className="flex items-center">
-                  Date
+                <div className="flex items-center space-x-1">
+                  <span className="font-sf-pro">Date</span>
                   {getSortIcon('date')}
                 </div>
               </th>
-              <th 
-                className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100 font-sf-pro"
-                onClick={() => onSort('expiryDate')}
-              >
-                <div className="flex items-center">
-                  Expiry Date
-                  {getSortIcon('expiryDate')}
-                </div>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <span className="font-sf-pro">Expiry</span>
               </th>
               <th 
-                className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100 font-sf-pro"
+                scope="col" 
+                className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer hover:bg-slate-100"
                 onClick={() => onSort('amount')}
               >
-                <div className="flex items-center justify-end">
-                  Amount
+                <div className="flex items-center justify-end space-x-1">
+                  <span className="font-sf-pro">Amount</span>
                   {getSortIcon('amount')}
                 </div>
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-sf-pro">
-                Status
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <span className="font-sf-pro">Status</span>
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider font-sf-pro">
-                Actions
+              <th scope="col" className="relative px-6 py-3">
+                <span className="sr-only">Actions</span>
               </th>
             </tr>
           </thead>
@@ -162,21 +168,38 @@ const QuotationsTable: React.FC<QuotationsTableProps> = ({
                   />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-slate-900 font-sf-pro">{quotation.number}</div>
-                  <div className="text-sm text-slate-500 font-sf-pro">{quotation.reference}</div>
+                  <div className="flex flex-col">
+                    <div className="text-sm font-medium text-slate-900 font-sf-pro">{quotation.number}</div>
+                    <div className="text-sm text-slate-500 font-sf-pro">{quotation.reference}</div>
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-slate-900 font-sf-pro">{quotation.client}</div>
-                  <div className="text-sm text-slate-500 font-sf-pro">{quotation.clientContact}</div>
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 h-8 w-8 rounded-full bg-mokm-purple-100 flex items-center justify-center">
+                      <User className="h-4 w-4 text-mokm-purple-600" />
+                    </div>
+                    <div className="ml-3">
+                      <div className="text-sm font-medium text-slate-900 font-sf-pro">{quotation.client}</div>
+                    </div>
+                  </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900 font-sf-pro">
-                  {new Date(quotation.date).toLocaleDateString()}
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center text-sm text-slate-500">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    <span className="font-sf-pro">{new Date(quotation.date).toLocaleDateString()}</span>
+                  </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900 font-sf-pro">
-                  {new Date(quotation.expiryDate).toLocaleDateString()}
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center text-sm text-slate-500">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    <span className="font-sf-pro">{new Date(quotation.expiryDate).toLocaleDateString()}</span>
+                  </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-slate-900 font-sf-pro">
-                  R {quotation.amount.toLocaleString()}
+                <td className="px-6 py-4 whitespace-nowrap text-right">
+                  <div className="flex items-center justify-end text-sm font-medium text-slate-900">
+                    <DollarSign className="h-4 w-4 mr-1" />
+                    <span className="font-sf-pro">R {quotation.amount.toLocaleString()}</span>
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(quotation.status)} font-sf-pro`}>
@@ -185,82 +208,67 @@ const QuotationsTable: React.FC<QuotationsTableProps> = ({
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div className="flex items-center justify-end space-x-2">
+                  <div className="relative group">
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleQuotationAction('view', quotation)}
-                      className="text-slate-600 hover:text-slate-900 font-sf-pro"
+                      className="text-slate-600 hover:text-slate-900"
                     >
-                      <Eye className="h-4 w-4" />
+                      <MoreVertical className="h-4 w-4" />
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleQuotationAction('edit', quotation)}
-                      className="text-slate-600 hover:text-slate-900 font-sf-pro"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    {quotation.status === 'accepted' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleQuotationAction('convertToInvoice', quotation)}
-                        className="text-green-600 hover:text-green-700 font-sf-pro"
-                        title="Convert to Invoice"
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                      <button
+                        onClick={() => handleQuotationAction('view', quotation)}
+                        className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-sf-pro"
                       >
-                        <Receipt className="h-4 w-4" />
-                      </Button>
-                    )}
-                    <div className="relative group">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-slate-600 hover:text-slate-900 font-sf-pro"
+                        <Eye className="h-4 w-4 mr-2" />
+                        View
+                      </button>
+                      <button
+                        onClick={() => handleQuotationAction('edit', quotation)}
+                        className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-sf-pro"
                       >
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleQuotationAction('duplicate', quotation)}
+                        className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-sf-pro"
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        Duplicate
+                      </button>
+                      <button
+                        onClick={() => handleQuotationAction('send', quotation)}
+                        className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-sf-pro"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Send
+                      </button>
+                      {quotation.status === 'accepted' && (
                         <button
-                          onClick={() => handleQuotationAction('duplicate', quotation)}
-                          className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-sf-pro"
+                          onClick={() => handleQuotationAction('convertToInvoice', quotation)}
+                          className="flex items-center w-full px-4 py-2 text-sm text-green-700 hover:bg-green-50 font-sf-pro"
                         >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Duplicate
+                          <Receipt className="h-4 w-4 mr-2" />
+                          Convert to Invoice
                         </button>
-                        <button
-                          onClick={() => handleQuotationAction('send', quotation)}
-                          className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-sf-pro"
-                        >
-                          <Mail className="h-4 w-4 mr-2" />
-                          Send
-                        </button>
-                        {quotation.status === 'accepted' && (
-                          <button
-                            onClick={() => handleQuotationAction('convertToInvoice', quotation)}
-                            className="flex items-center w-full px-4 py-2 text-sm text-green-700 hover:bg-green-50 font-sf-pro"
-                          >
-                            <Receipt className="h-4 w-4 mr-2" />
-                            Convert to Invoice
-                          </button>
-                        )}
-                        <button
-                          onClick={() => handleQuotationAction('download', quotation)}
-                          className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-sf-pro"
-                        >
-                          <Download className="h-4 w-4 mr-2" />
-                          Download PDF
-                        </button>
-                        <div className="border-t border-slate-200 my-1"></div>
-                        <button
-                          onClick={() => handleQuotationAction('delete', quotation)}
-                          className="flex items-center w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50 font-sf-pro"
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Delete
-                        </button>
-                      </div>
+                      )}
+                      <button
+                        onClick={() => handleQuotationAction('download', quotation)}
+                        className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-sf-pro"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download PDF
+                      </button>
+                      <div className="border-t border-slate-200 my-1"></div>
+                      <button
+                        onClick={() => handleQuotationAction('delete', quotation)}
+                        className="flex items-center w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50 font-sf-pro"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </td>
@@ -273,7 +281,13 @@ const QuotationsTable: React.FC<QuotationsTableProps> = ({
       <ConvertToInvoiceModal
         isOpen={convertModalOpen}
         onClose={() => setConvertModalOpen(false)}
-        quotation={selectedQuotationForConvert}
+        quotation={selectedQuotationForAction}
+      />
+
+      <DuplicateQuotationModal
+        isOpen={duplicateModalOpen}
+        onClose={() => setDuplicateModalOpen(false)}
+        quotation={selectedQuotationForAction}
       />
     </>
   );
