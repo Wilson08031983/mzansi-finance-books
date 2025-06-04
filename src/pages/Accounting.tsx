@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -18,13 +17,15 @@ import {
   Edit3, 
   Filter, 
   RefreshCw,
-  ArrowLeft
+  ArrowLeft,
+  Receipt
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import ExpensesTab from '@/components/accounting/ExpensesTab';
 
 interface BankStatement {
   id: number;
@@ -96,6 +97,7 @@ const Accounting: React.FC = () => {
   const [showAddTransaction, setShowAddTransaction] = useState(false);
   const [showAddPayroll, setShowAddPayroll] = useState(false);
   const [showAddReminder, setShowAddReminder] = useState(false);
+  const [showAddExpense, setShowAddExpense] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [filterCategory, setFilterCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -335,6 +337,7 @@ const Accounting: React.FC = () => {
         <div className="flex flex-wrap gap-2 mb-8">
           {[
             { id: 'transactions', label: 'Transactions', icon: DollarSign },
+            { id: 'expenses', label: 'Expenses', icon: Receipt },
             { id: 'bank-statements', label: 'Bank Statements', icon: FileText },
             { id: 'documents', label: 'Receipts & Invoices', icon: Upload },
             { id: 'payroll', label: 'Payroll', icon: Users },
@@ -354,6 +357,11 @@ const Accounting: React.FC = () => {
             </button>
           ))}
         </div>
+
+        {/* Expenses Tab */}
+        {activeTab === 'expenses' && (
+          <ExpensesTab onAddExpense={() => setShowAddExpense(true)} />
+        )}
 
         {/* Bank Statements Tab */}
         {activeTab === 'bank-statements' && (
@@ -919,6 +927,96 @@ const Accounting: React.FC = () => {
                 className="flex-1 bg-gradient-to-r from-mokm-blue-500 to-mokm-purple-500 hover:from-mokm-blue-600 hover:to-mokm-purple-600"
               >
                 Add Reminder
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Expense Modal */}
+      <Dialog open={showAddExpense} onOpenChange={setShowAddExpense}>
+        <DialogContent className="glass backdrop-blur-sm bg-white/95 border border-white/20">
+          <DialogHeader>
+            <DialogTitle className="font-sf-pro">Record New Expense</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target as HTMLFormElement);
+            // Handle expense creation
+            toast({
+              title: "Expense Recorded",
+              description: "New expense has been recorded successfully."
+            });
+            setShowAddExpense(false);
+          }}>
+            <div className="space-y-4">
+              <Input
+                name="date"
+                type="date"
+                required
+                className="glass backdrop-blur-sm bg-white/50 border border-white/20"
+              />
+              <Input
+                name="description"
+                placeholder="Expense Description"
+                required
+                className="glass backdrop-blur-sm bg-white/50 border border-white/20"
+              />
+              <Input
+                name="amount"
+                type="number"
+                step="0.01"
+                placeholder="Amount (R)"
+                required
+                className="glass backdrop-blur-sm bg-white/50 border border-white/20"
+              />
+              <select
+                name="category"
+                required
+                className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-mokm-blue-500 focus:border-transparent glass backdrop-blur-sm bg-white/50"
+              >
+                <option value="">Select Category</option>
+                <option value="Office Supplies">Office Supplies</option>
+                <option value="Business Meals">Business Meals</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Equipment">Equipment</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Professional Services">Professional Services</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Other">Other</option>
+              </select>
+              <select
+                name="paymentMethod"
+                required
+                className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-mokm-blue-500 focus:border-transparent glass backdrop-blur-sm bg-white/50"
+              >
+                <option value="">Payment Method</option>
+                <option value="Company Card">Company Card</option>
+                <option value="Personal Card">Personal Card</option>
+                <option value="Cash">Cash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+              </select>
+              <textarea
+                name="notes"
+                placeholder="Additional Notes (Optional)"
+                rows={3}
+                className="w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-mokm-blue-500 focus:border-transparent resize-none glass backdrop-blur-sm bg-white/50"
+              />
+            </div>
+            <div className="flex gap-3 mt-6">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowAddExpense(false)}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-mokm-blue-500 to-mokm-purple-500 hover:from-mokm-blue-600 hover:to-mokm-purple-600"
+              >
+                Record Expense
               </Button>
             </div>
           </form>
