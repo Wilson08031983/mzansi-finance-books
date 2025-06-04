@@ -1,39 +1,14 @@
-
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { 
   CheckCircle,
   Clock,
   AlertCircle,
   XCircle,
-  Plus,
-  Search,
-  Filter,
-  Grid3X3,
-  List,
-  RefreshCw,
-  Download,
-  Upload,
-  FileText,
-  ArrowLeft,
-  MoreHorizontal,
-  ChevronDown,
-  Settings,
-  Save,
-  Calendar,
-  DollarSign,
-  Users,
-  Tag,
-  SortAsc,
-  SortDesc,
-  ChevronLeft,
-  ChevronRight,
-  MoreVertical
+  FileText
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import QuotationsTable from '@/components/quotations/QuotationsTable';
-import QuotationsGrid from '@/components/quotations/QuotationsGrid';
+import QuotationsHeader from '@/components/quotations/QuotationsHeader';
+import QuotationsSearchFilters from '@/components/quotations/QuotationsSearchFilters';
+import QuotationsContent from '@/components/quotations/QuotationsContent';
 import CreateQuotationModal from '@/components/quotations/CreateQuotationModal';
 import QuotationsStats from '@/components/quotations/QuotationsStats';
 import QuotationsAdvancedFilters from '@/components/quotations/QuotationsAdvancedFilters';
@@ -41,7 +16,6 @@ import QuotationsBulkActions from '@/components/quotations/QuotationsBulkActions
 import QuotationsPagination from '@/components/quotations/QuotationsPagination';
 
 const Quotations = () => {
-  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
   const [isCreateQuotationModalOpen, setIsCreateQuotationModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,7 +31,7 @@ const Quotations = () => {
   const [filters, setFilters] = useState({
     status: 'all',
     dateRange: 'all',
-    dateType: 'created', // created, expiry, modified
+    dateType: 'created',
     client: 'all',
     amountMin: '',
     amountMax: '',
@@ -411,220 +385,28 @@ const Quotations = () => {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate('/dashboard')}
-            className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900 font-sf-pro">Quotations</h1>
-            <p className="text-slate-600 font-sf-pro">Create, manage, and track your quotations</p>
-          </div>
-        </div>
-        
-        <div className="flex items-center space-x-3">
-          {/* Import/Export Actions */}
-          <div className="relative">
-            <Button
-              variant="outline"
-              className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
-            >
-              <Upload className="h-4 w-4 mr-2" />
-              Import
-              <ChevronDown className="h-4 w-4 ml-1" />
-            </Button>
-          </div>
-          
-          <div className="relative">
-            <Button
-              variant="outline"
-              className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Export
-              <ChevronDown className="h-4 w-4 ml-1" />
-            </Button>
-          </div>
-          
-          <Button
-            variant="outline"
-            onClick={() => window.location.reload()}
-            className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
-          >
-            <RefreshCw className="h-4 w-4" />
-          </Button>
-          
-          {/* View Toggle */}
-          <div className="flex items-center border border-slate-300 rounded-xl p-1">
-            <Button
-              variant={viewMode === 'table' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('table')}
-              className="rounded-lg"
-            >
-              <List className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === 'grid' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('grid')}
-              className="rounded-lg"
-            >
-              <Grid3X3 className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          {/* Settings */}
-          <Button
-            variant="outline"
-            className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
-          >
-            <Settings className="h-4 w-4" />
-          </Button>
-          
-          {/* Create Quotation */}
-          <Button
-            onClick={() => setIsCreateQuotationModalOpen(true)}
-            className="bg-gradient-to-r from-mokm-orange-500 via-mokm-pink-500 to-mokm-purple-500 hover:from-mokm-orange-600 hover:via-mokm-pink-600 hover:to-mokm-purple-600 text-white font-sf-pro rounded-xl shadow-colored hover:shadow-colored-lg transition-all duration-300"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Create Quotation
-          </Button>
-        </div>
-      </div>
+      <QuotationsHeader
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        setIsCreateQuotationModalOpen={setIsCreateQuotationModalOpen}
+      />
 
-      {/* Quotations Stats */}
       <QuotationsStats quotations={mockQuotations} />
 
-      {/* Search and Filters Section */}
-      <Card className="glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business">
-        <CardContent className="p-6">
-          <div className="space-y-4">
-            {/* Main Search Bar */}
-            <div className="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search quotations by number, client, or reference"
-                  value={searchTerm}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
-                />
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm('')}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400 hover:text-slate-600"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-              
-              <div className="flex items-center space-x-3">
-                <Button
-                  variant="outline"
-                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  className={`border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300 ${
-                    showAdvancedFilters ? 'bg-mokm-purple-50 border-mokm-purple-300' : ''
-                  }`}
-                >
-                  <Filter className="h-4 w-4 mr-2" />
-                  Advanced Filters
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  onClick={handleSaveFilter}
-                  className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
-                >
-                  <Save className="h-4 w-4 mr-2" />
-                  Save Filter
-                </Button>
-              </div>
-            </div>
+      <QuotationsSearchFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        filters={filters}
+        setFilters={setFilters}
+        showAdvancedFilters={showAdvancedFilters}
+        setShowAdvancedFilters={setShowAdvancedFilters}
+        recentSearches={recentSearches}
+        clients={clients}
+        handleSearch={handleSearch}
+        handleClearFilters={handleClearFilters}
+        handleSaveFilter={handleSaveFilter}
+      />
 
-            {/* Quick Filters */}
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center space-x-2">
-                <Filter className="h-4 w-4 text-slate-500" />
-                <select
-                  value={filters.status}
-                  onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-                  className="px-3 py-2 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-lg focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
-                >
-                  <option value="all">All Status</option>
-                  <option value="draft">Draft</option>
-                  <option value="sent">Sent</option>
-                  <option value="viewed">Viewed</option>
-                  <option value="accepted">Accepted</option>
-                  <option value="rejected">Rejected</option>
-                  <option value="expired">Expired</option>
-                </select>
-              </div>
-              
-              <select
-                value={filters.dateRange}
-                onChange={(e) => setFilters(prev => ({ ...prev, dateRange: e.target.value }))}
-                className="px-3 py-2 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-lg focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
-              >
-                <option value="all">All Dates</option>
-                <option value="today">Today</option>
-                <option value="week">This Week</option>
-                <option value="month">This Month</option>
-                <option value="quarter">This Quarter</option>
-                <option value="year">This Year</option>
-              </select>
-              
-              <select
-                value={filters.client}
-                onChange={(e) => setFilters(prev => ({ ...prev, client: e.target.value }))}
-                className="px-3 py-2 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-lg focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
-              >
-                <option value="all">All Clients</option>
-                {clients.map(client => (
-                  <option key={client.id} value={client.id}>{client.name}</option>
-                ))}
-              </select>
-              
-              <Button
-                variant="outline"
-                onClick={handleClearFilters}
-                className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-lg transition-all duration-300"
-              >
-                Clear Filters
-              </Button>
-            </div>
-
-            {/* Recent Searches */}
-            {recentSearches.length > 0 && (
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-slate-600 font-sf-pro">Recent:</span>
-                <div className="flex flex-wrap gap-2">
-                  {recentSearches.map((search, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSearchTerm(search)}
-                      className="px-2 py-1 text-xs bg-slate-100 text-slate-700 rounded-md hover:bg-slate-200 transition-colors font-sf-pro"
-                    >
-                      {search}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Advanced Filters */}
       {showAdvancedFilters && (
         <QuotationsAdvancedFilters
           filters={filters}
@@ -635,7 +417,6 @@ const Quotations = () => {
         />
       )}
 
-      {/* Bulk Actions Bar */}
       {selectedQuotations.length > 0 && (
         <QuotationsBulkActions
           selectedCount={selectedQuotations.length}
@@ -644,118 +425,24 @@ const Quotations = () => {
         />
       )}
 
-      {/* Quotations List */}
-      <Card className="glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business hover:shadow-business-lg transition-all duration-300">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-slate-900 font-sf-pro text-xl">
-              {sortedQuotations.length} Quotation{sortedQuotations.length !== 1 ? 's' : ''}
-              {selectedQuotations.length > 0 && (
-                <span className="text-sm font-normal text-slate-600 ml-2">
-                  ({selectedQuotations.length} selected)
-                </span>
-              )}
-            </CardTitle>
-            
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-2 text-sm text-slate-600">
-                <span>Sort by:</span>
-                <button
-                  onClick={() => handleSort('date')}
-                  className={`flex items-center space-x-1 px-2 py-1 rounded hover:bg-slate-100 ${
-                    sortColumn === 'date' ? 'text-mokm-purple-600' : ''
-                  }`}
-                >
-                  <span>Date</span>
-                  {sortColumn === 'date' && (
-                    sortDirection === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />
-                  )}
-                </button>
-                <button
-                  onClick={() => handleSort('amount')}
-                  className={`flex items-center space-x-1 px-2 py-1 rounded hover:bg-slate-100 ${
-                    sortColumn === 'amount' ? 'text-mokm-purple-600' : ''
-                  }`}
-                >
-                  <span>Amount</span>
-                  {sortColumn === 'amount' && (
-                    sortDirection === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />
-                  )}
-                </button>
-                <button
-                  onClick={() => handleSort('client')}
-                  className={`flex items-center space-x-1 px-2 py-1 rounded hover:bg-slate-100 ${
-                    sortColumn === 'client' ? 'text-mokm-purple-600' : ''
-                  }`}
-                >
-                  <span>Client</span>
-                  {sortColumn === 'client' && (
-                    sortDirection === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {viewMode === 'table' ? (
-            <QuotationsTable 
-              quotations={paginatedQuotations}
-              selectedQuotations={selectedQuotations}
-              onSelectQuotation={handleSelectQuotation}
-              onSelectAll={handleSelectAll}
-              getStatusIcon={getStatusIcon}
-              getStatusColor={getStatusColor}
-              sortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={handleSort}
-            />
-          ) : (
-            <QuotationsGrid 
-              quotations={paginatedQuotations}
-              selectedQuotations={selectedQuotations}
-              onSelectQuotation={handleSelectQuotation}
-              getStatusIcon={getStatusIcon}
-              getStatusColor={getStatusColor}
-            />
-          )}
-          
-          {sortedQuotations.length === 0 && (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-gradient-to-r from-slate-200 to-slate-300 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <FileText className="h-8 w-8 text-slate-400" />
-              </div>
-              <h3 className="text-slate-900 font-semibold font-sf-pro mb-2">No quotations found</h3>
-              <p className="text-slate-600 font-sf-pro text-sm mb-4">
-                {searchTerm || Object.values(filters).some(f => f !== 'all' && f !== '' && (Array.isArray(f) ? f.length > 0 : true))
-                  ? 'Try adjusting your search terms or filters'
-                  : 'Get started by creating your first quotation'
-                }
-              </p>
-              <div className="flex items-center justify-center space-x-3">
-                {(searchTerm || Object.values(filters).some(f => f !== 'all' && f !== '' && (Array.isArray(f) ? f.length > 0 : true))) && (
-                  <Button
-                    variant="outline"
-                    onClick={handleClearFilters}
-                    className="font-sf-pro rounded-xl"
-                  >
-                    Clear Filters
-                  </Button>
-                )}
-                <Button
-                  onClick={() => setIsCreateQuotationModalOpen(true)}
-                  className="bg-gradient-to-r from-mokm-orange-500 via-mokm-pink-500 to-mokm-purple-500 hover:from-mokm-orange-600 hover:via-mokm-pink-600 hover:to-mokm-purple-600 text-white font-sf-pro rounded-xl"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Your First Quotation
-                </Button>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <QuotationsContent
+        viewMode={viewMode}
+        paginatedQuotations={paginatedQuotations}
+        sortedQuotations={sortedQuotations}
+        selectedQuotations={selectedQuotations}
+        handleSelectQuotation={handleSelectQuotation}
+        handleSelectAll={handleSelectAll}
+        getStatusIcon={getStatusIcon}
+        getStatusColor={getStatusColor}
+        sortColumn={sortColumn}
+        sortDirection={sortDirection}
+        handleSort={handleSort}
+        searchTerm={searchTerm}
+        filters={filters}
+        handleClearFilters={handleClearFilters}
+        setIsCreateQuotationModalOpen={setIsCreateQuotationModalOpen}
+      />
 
-      {/* Pagination */}
       {sortedQuotations.length > 0 && (
         <QuotationsPagination
           currentPage={currentPage}
@@ -772,7 +459,6 @@ const Quotations = () => {
         />
       )}
 
-      {/* Create Quotation Modal */}
       <CreateQuotationModal 
         isOpen={isCreateQuotationModalOpen}
         onClose={() => setIsCreateQuotationModalOpen(false)}
