@@ -162,10 +162,10 @@ const Clients = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
+                className="h-8 px-3 text-xs border-slate-300 hover:bg-slate-50 font-sf-pro rounded-lg transition-all duration-300"
               >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
+                <ArrowLeft className="h-3 w-3 mr-1.5" />
+                Back
               </Button>
             </Link>
             <div>
