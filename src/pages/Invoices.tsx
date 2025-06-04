@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { Link } from 'react-router-dom';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardSidebarOverlay from '@/components/dashboard/DashboardSidebarOverlay';
 import InvoicesHeader from '@/components/invoices/InvoicesHeader';
@@ -210,8 +212,8 @@ const Invoices: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      <DashboardSidebar />
-      <DashboardSidebarOverlay isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <DashboardSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <DashboardSidebarOverlay sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       
       <div className="lg:ml-64">
         <div className="sticky top-0 z-40 lg:hidden">
