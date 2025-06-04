@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
@@ -12,13 +11,15 @@ import {
   Receipt,
   Wallet,
   PieChart,
-  Building2
+  Building2,
+  UserCheck
 } from 'lucide-react';
 
 const sidebarItems = [
   { title: 'Dashboard', icon: BarChart3, href: '/dashboard' },
   { title: 'My Company', icon: Building2, href: '/company' },
   { title: 'Clients', icon: Users, href: '/clients' },
+  { title: 'HR Management', icon: UserCheck, href: '/hr-management' },
   { title: 'Invoices', icon: FileText, href: '/invoices' },
   { title: 'Quotations', icon: Receipt, href: '/quotations' },
   { title: 'Expenses', icon: Wallet, href: '/expenses' },
