@@ -35,6 +35,28 @@ const InviteMemberModal = ({ isOpen, onClose }: InviteMemberModalProps) => {
     setLoading(true);
     
     try {
+      // First, ensure the user has a profile record
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError || !profile) {
+        // Create profile if it doesn't exist
+        const { error: createProfileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            email: user.email,
+          });
+
+        if (createProfileError) {
+          console.error('Error creating profile:', createProfileError);
+          throw new Error('Failed to create user profile');
+        }
+      }
+
       // Generate invitation token
       const { data: tokenData, error: tokenError } = await supabase
         .rpc('generate_invitation_token');
