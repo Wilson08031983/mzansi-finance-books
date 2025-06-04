@@ -1,15 +1,34 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import CompanyDetails from '@/components/company/CompanyDetails';
 import TeamManagement from '@/components/company/TeamManagement';
 import ActivityLog from '@/components/company/ActivityLog';
+import Clients from './Clients';
 
 const Company = () => {
-  const [activeTab, setActiveTab] = useState('company-details');
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Determine active tab based on current route
+  const getActiveTab = () => {
+    if (location.pathname === '/clients') return 'clients';
+    return 'company-details';
+  };
+
+  const [activeTab, setActiveTab] = useState(getActiveTab());
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (value === 'clients') {
+      navigate('/clients');
+    } else {
+      navigate('/company');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
@@ -34,7 +53,7 @@ const Company = () => {
                 My Company
               </h1>
               <p className="text-slate-600 text-lg font-sf-pro mt-2">
-                Manage your company details, team, and view activity logs
+                Manage your company details, team, clients, and view activity logs
               </p>
             </div>
           </div>
@@ -42,9 +61,8 @@ const Company = () => {
 
         {/* Tabs */}
         <Tabs 
-          defaultValue="company-details" 
           value={activeTab} 
-          onValueChange={setActiveTab} 
+          onValueChange={handleTabChange} 
           className="w-full animate-fade-in delay-200"
         >
           <TabsList className="glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business mb-8 p-2 rounded-2xl">
@@ -53,6 +71,12 @@ const Company = () => {
               className="font-sf-pro data-[state=active]:bg-gradient-to-r data-[state=active]:from-mokm-orange-500 data-[state=active]:to-mokm-pink-500 data-[state=active]:text-white data-[state=active]:shadow-colored rounded-xl transition-all duration-300"
             >
               Company Details
+            </TabsTrigger>
+            <TabsTrigger 
+              value="clients"
+              className="font-sf-pro data-[state=active]:bg-gradient-to-r data-[state=active]:from-mokm-blue-500 data-[state=active]:to-mokm-purple-500 data-[state=active]:text-white data-[state=active]:shadow-colored rounded-xl transition-all duration-300"
+            >
+              Clients
             </TabsTrigger>
             <TabsTrigger 
               value="team-management"
@@ -70,6 +94,10 @@ const Company = () => {
           
           <TabsContent value="company-details" className="animate-fade-in">
             <CompanyDetails />
+          </TabsContent>
+          
+          <TabsContent value="clients" className="animate-fade-in">
+            <Clients />
           </TabsContent>
           
           <TabsContent value="team-management" className="animate-fade-in">

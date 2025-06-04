@@ -19,7 +19,6 @@ const sidebarItems = [
   { title: 'Dashboard', icon: BarChart3, href: '/dashboard' },
   { title: 'My Company', icon: Building2, href: '/company' },
   { title: 'Invoices', icon: FileText, href: '/invoices' },
-  { title: 'Clients', icon: Users, href: '/clients' },
   { title: 'Quotations', icon: Receipt, href: '/quotations' },
   { title: 'Expenses', icon: Wallet, href: '/expenses' },
   { title: 'Reports', icon: PieChart, href: '/reports' },
