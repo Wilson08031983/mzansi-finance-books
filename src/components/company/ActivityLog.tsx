@@ -102,7 +102,7 @@ const ActivityLog = () => {
             className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
           >
             <Download className="h-4 w-4 mr-2" />
-            Export
+            Download PDF
           </Button>
         </div>
       </div>
