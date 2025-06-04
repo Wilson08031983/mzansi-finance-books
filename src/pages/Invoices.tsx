@@ -54,7 +54,7 @@ const Invoices: React.FC = () => {
   const [clientFilter, setClientFilter] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
   const [sortField, setSortField] = useState<string>('invoiceDate');
-  const [sortDirection, setSortDirection<'asc' | 'desc'>>('desc');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [showCreateModal, setShowCreateModal] = useState(false);
