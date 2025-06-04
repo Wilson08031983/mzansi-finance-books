@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
@@ -10,7 +9,6 @@ import {
   FileText,
   Users,
   Receipt,
-  Wallet,
   PieChart,
   Building2,
   UserCheck,
@@ -26,7 +24,6 @@ const sidebarItems = [
   { title: 'Invoices', icon: FileText, href: '/invoices' },
   { title: 'Quotations', icon: Receipt, href: '/quotations' },
   { title: 'Accounting', icon: Calculator, href: '/accounting' },
-  { title: 'Expenses', icon: Wallet, href: '/expenses' },
   { title: 'Reports', icon: PieChart, href: '/reports' },
 ];
 
