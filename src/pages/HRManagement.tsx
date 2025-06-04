@@ -8,7 +8,11 @@ import {
   Clock,
   UserPlus,
   Target,
-  DollarSign
+  DollarSign,
+  FileText,
+  Check,
+  Plus,
+  Search
 } from 'lucide-react';
 import HRDashboard from '@/components/hr/HRDashboard';
 import EmployeeManagement from '@/components/hr/EmployeeManagement';
