@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
   Plus, 
@@ -8,7 +9,8 @@ import {
   Upload, 
   Grid3X3, 
   List,
-  MoreHorizontal
+  MoreHorizontal,
+  ArrowLeft
 } from 'lucide-react';
 
 interface InvoicesHeaderProps {
@@ -26,9 +28,18 @@ const InvoicesHeader: React.FC<InvoicesHeaderProps> = ({
 }) => {
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 font-sf-pro">Invoices</h1>
-        <p className="text-slate-600 font-sf-pro">Manage and track your invoices and payments</p>
+      <div className="flex items-center gap-4">
+        <Link 
+          to="/dashboard" 
+          className="flex items-center gap-2 px-3 py-2 text-slate-600 hover:text-slate-900 hover:bg-white/50 rounded-lg transition-colors font-sf-pro"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back to Dashboard</span>
+        </Link>
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 font-sf-pro">Invoices</h1>
+          <p className="text-slate-600 font-sf-pro">Manage and track your invoices and payments</p>
+        </div>
       </div>
       
       <div className="flex items-center gap-3">
