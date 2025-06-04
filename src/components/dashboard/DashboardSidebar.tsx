@@ -35,8 +35,12 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ sidebarOpen, setSid
     <div className={`fixed inset-y-0 left-0 z-50 w-72 glass backdrop-blur-xl bg-white/80 border-r border-white/20 shadow-business-xl transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-all duration-500 ease-out lg:translate-x-0 lg:static lg:inset-0`}>
       <div className="flex items-center justify-between h-20 px-6 border-b border-white/10">
         <div className="flex items-center space-x-3 animate-fade-in">
-          <div className="w-10 h-10 bg-gradient-to-br from-mokm-orange-500 via-mokm-pink-500 to-mokm-purple-500 rounded-xl flex items-center justify-center shadow-colored-lg animate-float">
-            <span className="text-white font-bold text-lg font-sf-pro">M</span>
+          <div className="w-10 h-10 bg-gradient-to-br from-mokm-orange-500 via-mokm-pink-500 to-mokm-purple-500 rounded-xl flex items-center justify-center shadow-colored-lg animate-float overflow-hidden">
+            <img 
+              src="/lovable-uploads/8021eb93-6e6a-421e-a8ff-bed101269a7c.png" 
+              alt="MOKMzansiBooks Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-mokm-orange-600 via-mokm-pink-600 to-mokm-purple-600 bg-clip-text text-transparent font-sf-pro">
             MOKMzansiBooks
