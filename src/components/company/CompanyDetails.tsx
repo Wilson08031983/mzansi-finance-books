@@ -15,7 +15,10 @@ const CompanyDetails = () => {
     email: 'info@mokmzansibooks.com',
     phone: '+27 11 123 4567',
     website: 'www.mokmzansibooks.com',
-    address: '123 Business Street, Johannesburg, 2000',
+    addressLine1: '123 Business Street',
+    addressLine2: '',
+    addressLine3: '',
+    addressLine4: 'Johannesburg, 2000',
     regNumber: '2024/123456/07',
     vatNumber: '4123456789',
     taxNumber: 'TAX123456789',
@@ -174,19 +177,70 @@ const CompanyDetails = () => {
               )}
             </div>
           </div>
+
+          {/* Address Fields - Updated to 4 separate lines */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Address</label>
-            {isEditing ? (
-              <textarea
-                value={companyData.address}
-                onChange={(e) => handleInputChange('address', e.target.value)}
-                rows={3}
-                className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro resize-none"
-              />
-            ) : (
-              <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.address}</p>
-            )}
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs text-slate-500 mb-1 font-sf-pro">Address Line 1</label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={companyData.addressLine1}
+                    onChange={(e) => handleInputChange('addressLine1', e.target.value)}
+                    placeholder="Street number and name"
+                    className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
+                  />
+                ) : (
+                  <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.addressLine1 || 'Not specified'}</p>
+                )}
+              </div>
+              <div>
+                <label className="block text-xs text-slate-500 mb-1 font-sf-pro">Address Line 2</label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={companyData.addressLine2}
+                    onChange={(e) => handleInputChange('addressLine2', e.target.value)}
+                    placeholder="Apartment, suite, building (optional)"
+                    className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
+                  />
+                ) : (
+                  <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.addressLine2 || 'Not specified'}</p>
+                )}
+              </div>
+              <div>
+                <label className="block text-xs text-slate-500 mb-1 font-sf-pro">Address Line 3</label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={companyData.addressLine3}
+                    onChange={(e) => handleInputChange('addressLine3', e.target.value)}
+                    placeholder="District, suburb (optional)"
+                    className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
+                  />
+                ) : (
+                  <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.addressLine3 || 'Not specified'}</p>
+                )}
+              </div>
+              <div>
+                <label className="block text-xs text-slate-500 mb-1 font-sf-pro">Address Line 4</label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={companyData.addressLine4}
+                    onChange={(e) => handleInputChange('addressLine4', e.target.value)}
+                    placeholder="City, postal code"
+                    className="w-full px-4 py-3 glass backdrop-blur-sm bg-white/50 border border-white/20 rounded-xl focus:ring-2 focus:ring-mokm-purple-500/50 focus:border-mokm-purple-500/50 transition-all duration-300 font-sf-pro"
+                  />
+                ) : (
+                  <p className="px-4 py-3 bg-slate-50 rounded-xl font-sf-pro text-slate-900">{companyData.addressLine4 || 'Not specified'}</p>
+                )}
+              </div>
+            </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2 font-sf-pro">Registration Number</label>
