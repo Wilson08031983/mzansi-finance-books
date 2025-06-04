@@ -1,23 +1,24 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
-  Plus, 
   Search, 
-  Filter, 
-  Grid3X3, 
-  List, 
-  Kanban,
-  Calendar,
-  Users,
-  DollarSign,
-  Clock,
-  FileText,
-  MoreVertical,
-  Eye,
+  Plus, 
+  Calendar, 
+  CheckSquare, 
+  Users, 
+  Clock, 
+  MoreVertical, 
   Edit,
   Trash2,
-  Download,
-  Upload
+  Filter,
+  ArrowUpDown,
+  Tag,
+  Grid3X3,
+  List,
+  Kanban,
+  DollarSign,
+  FileText
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,68 +33,123 @@ import ProjectsKanban from '@/components/projects/ProjectsKanban';
 import CreateProjectModal from '@/components/projects/CreateProjectModal';
 import ProjectFilters from '@/components/projects/ProjectFilters';
 
+interface Project {
+  id: number;
+  name: string;
+  client: string;
+  manager: string;
+  status: 'In Progress' | 'Completed' | 'Planning' | 'On Hold' | 'Cancelled';
+  priority: 'High' | 'Medium' | 'Low';
+  progress: number;
+  budget: number;
+  expenses: number;
+  startDate: string;
+  endDate: string;
+  team: string[];
+  tags: string[];
+  description: string;
+  code: string;
+}
+
 const Projects = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const [viewMode, setViewMode] = useState('list'); // list, grid, kanban
+  const [viewMode, setViewMode] = useState('grid'); // list, grid, kanban
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProjects, setSelectedProjects] = useState([]);
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('name');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Mock projects data
-  const [projects] = useState([
+  // Sample projects data
+  const [projects] = useState<Project[]>([
     {
       id: 1,
       name: 'Website Redesign',
-      client: 'ABC Corp',
+      client: 'ABC Corporation',
       manager: 'John Smith',
       status: 'In Progress',
       priority: 'High',
-      progress: 65,
-      budget: 50000,
-      expenses: 32000,
-      startDate: '2024-01-15',
-      endDate: '2024-06-30',
-      team: ['Alice Johnson', 'Bob Wilson', 'Carol Davis'],
+      progress: 75,
+      budget: 25000,
+      expenses: 15000,
+      startDate: '2025-05-01',
+      endDate: '2025-07-15',
+      team: ['Sarah Parker', 'Michael Johnson', 'Lisa Williams', 'David Brown'],
       tags: ['Web Development', 'UI/UX'],
       description: 'Complete redesign of corporate website with modern UI/UX',
-      code: 'WEB-2024-001'
+      code: 'WEB-2025-001'
     },
     {
       id: 2,
       name: 'Mobile App Development',
-      client: 'XYZ Inc',
+      client: 'Tech Solutions',
       manager: 'Sarah Connor',
       status: 'Planning',
       priority: 'Medium',
-      progress: 15,
-      budget: 75000,
-      expenses: 8500,
-      startDate: '2024-03-01',
-      endDate: '2024-12-15',
+      progress: 40,
+      budget: 50000,
+      expenses: 18000,
+      startDate: '2025-04-15',
+      endDate: '2025-08-30',
       team: ['Mike Johnson', 'Lisa Anderson'],
       tags: ['Mobile', 'React Native'],
       description: 'Native mobile application for iOS and Android platforms',
-      code: 'MOB-2024-002'
+      code: 'MOB-2025-002'
     },
     {
       id: 3,
-      name: 'E-commerce Platform',
-      client: 'Tech Solutions',
+      name: 'Marketing Campaign',
+      client: 'Global Retail',
       manager: 'David Lee',
       status: 'Completed',
       priority: 'High',
       progress: 100,
-      budget: 120000,
-      expenses: 115000,
-      startDate: '2023-08-01',
-      endDate: '2024-02-28',
-      team: ['Emma Brown', 'James Wilson', 'Anna Taylor', 'Robert Chen'],
-      tags: ['E-commerce', 'Backend'],
-      description: 'Full-featured e-commerce platform with payment integration',
-      code: 'ECM-2023-003'
+      budget: 15000,
+      expenses: 14800,
+      startDate: '2025-03-10',
+      endDate: '2025-05-20',
+      team: ['Emma Brown', 'James Wilson', 'Anna Taylor'],
+      tags: ['Marketing', 'Digital'],
+      description: 'Comprehensive digital marketing campaign',
+      code: 'MKT-2025-003'
+    },
+    {
+      id: 4,
+      name: 'Office Renovation',
+      client: 'MOK Internal',
+      manager: 'Robert Chen',
+      status: 'On Hold',
+      priority: 'Low',
+      progress: 35,
+      budget: 75000,
+      expenses: 25000,
+      startDate: '2025-02-15',
+      endDate: '2025-06-15',
+      team: ['Tom Wilson', 'Jane Smith', 'Mark Davis', 'Carol White'],
+      tags: ['Construction', 'Internal'],
+      description: 'Complete office space renovation and modernization',
+      code: 'REN-2025-004'
+    },
+    {
+      id: 5,
+      name: 'Product Launch',
+      client: 'Innovate Inc.',
+      manager: 'Lisa Park',
+      status: 'Cancelled',
+      priority: 'Medium',
+      progress: 60,
+      budget: 30000,
+      expenses: 18000,
+      startDate: '2025-01-10',
+      endDate: '2025-04-10',
+      team: ['Alex Johnson', 'Maria Garcia', 'Steve Brown'],
+      tags: ['Product', 'Launch'],
+      description: 'New product launch strategy and execution',
+      code: 'PRD-2025-005'
     }
   ]);
 
@@ -131,16 +187,57 @@ const Projects = () => {
     }
   };
 
-  const filteredProjects = projects.filter(project => {
-    if (!searchTerm) return true;
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      project.name.toLowerCase().includes(searchLower) ||
-      project.client.toLowerCase().includes(searchLower) ||
-      project.code.toLowerCase().includes(searchLower) ||
-      project.manager.toLowerCase().includes(searchLower)
-    );
-  });
+  // Filter and sort projects
+  const filteredProjects = projects
+    .filter(project => {
+      const matchesSearch = 
+        project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project.manager.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesStatus = statusFilter === 'all' || project.status === statusFilter;
+      
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      let comparison = 0;
+      
+      switch (sortBy) {
+        case 'name':
+          comparison = a.name.localeCompare(b.name);
+          break;
+        case 'client':
+          comparison = a.client.localeCompare(b.client);
+          break;
+        case 'progress':
+          comparison = a.progress - b.progress;
+          break;
+        case 'budget':
+          comparison = a.budget - b.budget;
+          break;
+        case 'startDate':
+          comparison = new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+          break;
+        case 'endDate':
+          comparison = new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+          break;
+        default:
+          comparison = 0;
+      }
+      
+      return sortOrder === 'asc' ? comparison : -comparison;
+    });
+
+  // Toggle sort order
+  const handleSort = (column: string) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(column);
+      setSortOrder('asc');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex relative overflow-hidden">
@@ -311,12 +408,44 @@ const Projects = () => {
                 />
               </div>
               
+              <div className="flex items-center space-x-2">
+                <Filter className="h-4 w-4 text-slate-400" />
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-mokm-purple-500 focus:border-transparent text-sm"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Planning">Planning</option>
+                  <option value="On Hold">On Hold</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <ArrowUpDown className="h-4 w-4 text-slate-400" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => handleSort(e.target.value)}
+                  className="px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-mokm-purple-500 focus:border-transparent text-sm"
+                >
+                  <option value="name">Project Name</option>
+                  <option value="client">Client</option>
+                  <option value="progress">Progress</option>
+                  <option value="budget">Budget</option>
+                  <option value="startDate">Start Date</option>
+                  <option value="endDate">End Date</option>
+                </select>
+              </div>
+
               {selectedProjects.length > 0 && (
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-slate-600">{selectedProjects.length} selected</span>
                   <Button variant="outline" size="sm">
-                    <Download className="h-4 w-4 mr-2" />
-                    Export
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit
                   </Button>
                   <Button variant="outline" size="sm">
                     <Trash2 className="h-4 w-4 mr-2" />
@@ -360,6 +489,28 @@ const Projects = () => {
               />
             )}
           </div>
+
+          {/* Empty State */}
+          {filteredProjects.length === 0 && (
+            <div className="text-center py-12 glass backdrop-blur-xl bg-white/80 border-white/20 shadow-business rounded-xl">
+              <div className="mx-auto w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center">
+                <Calendar className="h-12 w-12 text-slate-300" />
+              </div>
+              <h3 className="mt-4 text-lg font-medium text-slate-500">No projects found</h3>
+              <p className="mt-1 text-slate-400">
+                Create a new project or adjust your filters to see projects
+              </p>
+              <div className="mt-6">
+                <Button 
+                  onClick={() => setShowCreateModal(true)}
+                  className="bg-gradient-to-r from-mokm-orange-500 to-mokm-pink-500 hover:from-mokm-orange-600 hover:to-mokm-pink-600 text-white"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Project
+                </Button>
+              </div>
+            </div>
+          )}
         </main>
 
         {/* Create Project Modal */}
