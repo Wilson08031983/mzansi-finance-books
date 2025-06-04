@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,8 +19,10 @@ import {
   Mail,
   FileText,
   Receipt,
-  Trash2
+  Trash2,
+  ArrowLeft
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import ClientsTable from '@/components/clients/ClientsTable';
 import ClientsGrid from '@/components/clients/ClientsGrid';
 import AddClientModal from '@/components/clients/AddClientModal';
@@ -29,6 +30,7 @@ import BulkActionsBar from '@/components/clients/BulkActionsBar';
 import ClientsStats from '@/components/clients/ClientsStats';
 
 const Clients = () => {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
   const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -159,9 +161,19 @@ const Clients = () => {
     <div className="space-y-8">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 font-sf-pro">Clients</h1>
-          <p className="text-slate-600 font-sf-pro">Manage your business clients and their information</p>
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="outline"
+            onClick={() => navigate('/dashboard')}
+            className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 font-sf-pro">Clients</h1>
+            <p className="text-slate-600 font-sf-pro">Manage your business clients and their information</p>
+          </div>
         </div>
         
         <div className="flex items-center space-x-4">
