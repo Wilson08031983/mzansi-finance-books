@@ -34,7 +34,7 @@ const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ data }) => {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height={280}>
+          <ResponsiveContainer width="100%" height={350}>
             <PieChart>
               <defs>
                 {MOKM_COLORS.map((color, index) => (
