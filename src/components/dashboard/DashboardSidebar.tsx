@@ -12,7 +12,8 @@ import {
   Wallet,
   PieChart,
   Building2,
-  UserCheck
+  UserCheck,
+  Calculator
 } from 'lucide-react';
 
 const sidebarItems = [
@@ -22,6 +23,7 @@ const sidebarItems = [
   { title: 'HR Management', icon: UserCheck, href: '/hr-management' },
   { title: 'Invoices', icon: FileText, href: '/invoices' },
   { title: 'Quotations', icon: Receipt, href: '/quotations' },
+  { title: 'Accounting', icon: Calculator, href: '/accounting' },
   { title: 'Expenses', icon: Wallet, href: '/expenses' },
   { title: 'Reports', icon: PieChart, href: '/reports' },
 ];
