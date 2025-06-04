@@ -164,6 +164,7 @@ const Clients = () => {
         <div className="flex items-center space-x-4">
           <Button
             variant="outline"
+            size="sm"
             onClick={() => navigate('/dashboard')}
             className="border-slate-300 hover:bg-slate-50 font-sf-pro rounded-xl transition-all duration-300"
           >
