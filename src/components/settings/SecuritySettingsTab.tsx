@@ -154,7 +154,7 @@ const SecuritySettingsTab = () => {
                           id="uppercase"
                           checked={passwordComplexity.requireUppercase}
                           onCheckedChange={(checked) => 
-                            setPasswordComplexity({...passwordComplexity, requireUppercase: checked})
+                            setPasswordComplexity({...passwordComplexity, requireUppercase: !!checked})
                           }
                         />
                         <Label htmlFor="uppercase" className="text-sm">
@@ -166,7 +166,7 @@ const SecuritySettingsTab = () => {
                           id="lowercase"
                           checked={passwordComplexity.requireLowercase}
                           onCheckedChange={(checked) => 
-                            setPasswordComplexity({...passwordComplexity, requireLowercase: checked})
+                            setPasswordComplexity({...passwordComplexity, requireLowercase: !!checked})
                           }
                         />
                         <Label htmlFor="lowercase" className="text-sm">
@@ -178,7 +178,7 @@ const SecuritySettingsTab = () => {
                           id="numbers"
                           checked={passwordComplexity.requireNumbers}
                           onCheckedChange={(checked) => 
-                            setPasswordComplexity({...passwordComplexity, requireNumbers: checked})
+                            setPasswordComplexity({...passwordComplexity, requireNumbers: !!checked})
                           }
                         />
                         <Label htmlFor="numbers" className="text-sm">
@@ -190,7 +190,7 @@ const SecuritySettingsTab = () => {
                           id="special"
                           checked={passwordComplexity.requireSpecialChars}
                           onCheckedChange={(checked) => 
-                            setPasswordComplexity({...passwordComplexity, requireSpecialChars: checked})
+                            setPasswordComplexity({...passwordComplexity, requireSpecialChars: !!checked})
                           }
                         />
                         <Label htmlFor="special" className="text-sm">

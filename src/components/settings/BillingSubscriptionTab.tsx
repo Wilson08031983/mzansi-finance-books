@@ -14,11 +14,9 @@ import {
   ArrowRight, 
   Shield 
 } from 'lucide-react';
-import { useSubscription } from '@/hooks/useSubscription';
 import { toast } from '@/hooks/use-toast';
 
 const BillingSubscriptionTab = () => {
-  const { subscription } = useSubscription();
   const [activeTab, setActiveTab] = useState('overview');
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
@@ -32,7 +30,7 @@ const BillingSubscriptionTab = () => {
     paymentDeclinedDate: null
   };
 
-  const currentSubscription = subscription || mockSubscription;
+  const currentSubscription = mockSubscription;
 
   // Format date from ISO string
   const formatDate = (dateString: string | null) => {
