@@ -197,6 +197,57 @@ export type Database = {
           },
         ]
       }
+      team_invitations: {
+        Row: {
+          company_id: string
+          created_at: string
+          expires_at: string
+          id: string
+          invitation_token: string
+          invited_by: string
+          invited_email: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invitation_token: string
+          invited_by: string
+          invited_email: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invitation_token?: string
+          invited_by?: string
+          invited_email?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_invitations_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_invitations_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -204,6 +255,10 @@ export type Database = {
     Functions: {
       check_subscription_access: {
         Args: { user_uuid: string }
+        Returns: string
+      }
+      generate_invitation_token: {
+        Args: Record<PropertyKey, never>
         Returns: string
       }
     }

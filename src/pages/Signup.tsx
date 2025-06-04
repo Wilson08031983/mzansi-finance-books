@@ -1,29 +1,49 @@
 
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft, UserPlus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 const Signup = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signUp } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // Check if this is from an invitation
+  const invitationData = location.state?.invitationData;
+  const invitationPassword = location.state?.password;
+  const isInvitationSignup = !!invitationData;
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    companyName: '',
+    email: invitationData?.invited_email || '',
+    password: invitationPassword || '',
+    confirmPassword: invitationPassword || '',
+    companyName: isInvitationSignup ? 'MOK Mzansi Books' : '',
     businessType: '',
     phone: ''
   });
+
+  useEffect(() => {
+    if (isInvitationSignup) {
+      // Pre-fill email and password for invitation signup
+      setFormData(prev => ({
+        ...prev,
+        email: invitationData.invited_email,
+        password: invitationPassword,
+        confirmPassword: invitationPassword,
+        companyName: 'MOK Mzansi Books'
+      }));
+    }
+  }, [invitationData, invitationPassword, isInvitationSignup]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,11 +61,17 @@ const Signup = () => {
         last_name: formData.lastName,
         company_name: formData.companyName,
         business_type: formData.businessType,
-        phone: formData.phone
+        phone: formData.phone,
+        invitation_token: invitationData?.invitation_token || null
       });
       
-      alert('Please check your email for verification instructions');
-      navigate('/login');
+      if (isInvitationSignup) {
+        alert('Account created successfully! Welcome to the team.');
+        navigate('/dashboard');
+      } else {
+        alert('Please check your email for verification instructions');
+        navigate('/login');
+      }
     } catch (error: any) {
       console.error('Signup error:', error);
       alert(error.message || 'Error creating account');
@@ -58,20 +84,31 @@ const Signup = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
         <div className="mb-8">
-          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-purple-600 transition-colors">
+          <Link to={isInvitationSignup ? "/accept-invitation" : "/"} className="inline-flex items-center text-gray-600 hover:text-purple-600 transition-colors">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
+            {isInvitationSignup ? 'Back to Invitation' : 'Back to Home'}
           </Link>
         </div>
 
         <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader className="text-center space-y-4">
             <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-500 rounded-2xl flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">M</span>
+              {isInvitationSignup ? (
+                <UserPlus className="text-white text-2xl" />
+              ) : (
+                <span className="text-white font-bold text-2xl">M</span>
+              )}
             </div>
             <div>
-              <CardTitle className="text-2xl font-bold text-gray-900">Start Your Free Trial</CardTitle>
-              <p className="text-gray-600 mt-2">Create your MOKMzansiBooks account - no credit card required</p>
+              <CardTitle className="text-2xl font-bold text-gray-900">
+                {isInvitationSignup ? 'Complete Your Profile' : 'Start Your Free Trial'}
+              </CardTitle>
+              <p className="text-gray-600 mt-2">
+                {isInvitationSignup 
+                  ? 'Fill in your details to complete your account setup'
+                  : 'Create your MOKMzansiBooks account - no credit card required'
+                }
+              </p>
             </div>
           </CardHeader>
 
@@ -111,6 +148,7 @@ const Signup = () => {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="h-12 bg-white border-gray-200 focus:border-purple-500 focus:ring-purple-500"
                   required
+                  disabled={isInvitationSignup}
                 />
               </div>
 
@@ -123,6 +161,7 @@ const Signup = () => {
                   onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                   className="h-12 bg-white border-gray-200 focus:border-purple-500 focus:ring-purple-500"
                   required
+                  disabled={isInvitationSignup}
                 />
               </div>
 
@@ -155,62 +194,68 @@ const Signup = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-gray-700 font-medium">Password</Label>
-                  <div className="relative">
+              {!isInvitationSignup && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-gray-700 font-medium">Password</Label>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        className="h-12 bg-white border-gray-200 focus:border-purple-500 focus:ring-purple-500 pr-12"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      >
+                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">Confirm Password</Label>
                     <Input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      className="h-12 bg-white border-gray-200 focus:border-purple-500 focus:ring-purple-500 pr-12"
+                      id="confirmPassword"
+                      type="password"
+                      value={formData.confirmPassword}
+                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                      className="h-12 bg-white border-gray-200 focus:border-purple-500 focus:ring-purple-500"
                       required
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                    </button>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">Confirm Password</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    className="h-12 bg-white border-gray-200 focus:border-purple-500 focus:ring-purple-500"
-                    required
-                  />
-                </div>
-              </div>
+              )}
 
-              <div className="flex items-start space-x-2">
-                <input type="checkbox" className="mt-1 rounded border-gray-300" required />
-                <span className="text-sm text-gray-600">
-                  I agree to the <Link to="/terms" className="text-purple-600 hover:text-purple-700">Terms of Service</Link> and <Link to="/privacy" className="text-purple-600 hover:text-purple-700">Privacy Policy</Link>
-                </span>
-              </div>
+              {!isInvitationSignup && (
+                <div className="flex items-start space-x-2">
+                  <input type="checkbox" className="mt-1 rounded border-gray-300" required />
+                  <span className="text-sm text-gray-600">
+                    I agree to the <Link to="/terms" className="text-purple-600 hover:text-purple-700">Terms of Service</Link> and <Link to="/privacy" className="text-purple-600 hover:text-purple-700">Privacy Policy</Link>
+                  </span>
+                </div>
+              )}
 
               <Button
                 type="submit"
                 disabled={loading}
                 className="w-full h-12 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                {loading ? 'Creating Account...' : 'Start Free Trial'}
+                {loading ? 'Creating Account...' : (isInvitationSignup ? 'Complete Registration' : 'Start Free Trial')}
               </Button>
             </form>
 
-            <div className="text-center">
-              <span className="text-gray-600">Already have an account? </span>
-              <Link to="/login" className="text-purple-600 hover:text-purple-700 font-semibold">
-                Sign in
-              </Link>
-            </div>
+            {!isInvitationSignup && (
+              <div className="text-center">
+                <span className="text-gray-600">Already have an account? </span>
+                <Link to="/login" className="text-purple-600 hover:text-purple-700 font-semibold">
+                  Sign in
+                </Link>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
