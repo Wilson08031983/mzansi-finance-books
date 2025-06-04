@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, Mail, MoreHorizontal, Shield, User, Crown } from 'lucide-react';
+import { Plus, Mail, MoreHorizontal, Shield, User, Crown, UserPlus } from 'lucide-react';
 import InviteMemberModal from './InviteMemberModal';
 
 const TeamManagement = () => {
@@ -36,6 +36,11 @@ const TeamManagement = () => {
   ]);
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
+  const handleAddNewUser = () => {
+    console.log('Add new user clicked');
+    // TODO: Implement add new user functionality
+  };
 
   const getRoleIcon = (role: string) => {
     switch (role) {
@@ -78,13 +83,22 @@ const TeamManagement = () => {
           <h2 className="text-2xl font-bold text-slate-900 font-sf-pro">Team Members</h2>
           <p className="text-slate-600 font-sf-pro">Manage your team and their permissions</p>
         </div>
-        <Button 
-          onClick={() => setIsInviteModalOpen(true)}
-          className="bg-gradient-to-r from-mokm-purple-500 to-mokm-blue-500 hover:from-mokm-purple-600 hover:to-mokm-blue-600 text-white font-sf-pro rounded-xl shadow-colored hover:shadow-colored-lg transition-all duration-300"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Invite Member
-        </Button>
+        <div className="flex space-x-3">
+          <Button 
+            onClick={handleAddNewUser}
+            className="bg-gradient-to-r from-mokm-orange-500 to-mokm-pink-500 hover:from-mokm-orange-600 hover:to-mokm-pink-600 text-white font-sf-pro rounded-xl shadow-colored hover:shadow-colored-lg transition-all duration-300"
+          >
+            <UserPlus className="h-4 w-4 mr-2" />
+            Add new user
+          </Button>
+          <Button 
+            onClick={() => setIsInviteModalOpen(true)}
+            className="bg-gradient-to-r from-mokm-purple-500 to-mokm-blue-500 hover:from-mokm-purple-600 hover:to-mokm-blue-600 text-white font-sf-pro rounded-xl shadow-colored hover:shadow-colored-lg transition-all duration-300"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Invite Member
+          </Button>
+        </div>
       </div>
 
       {/* Team Stats */}
