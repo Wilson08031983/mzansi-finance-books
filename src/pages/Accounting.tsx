@@ -7,6 +7,12 @@ import ExpensesTab from '@/components/accounting/ExpensesTab';
 import DocumentsTab from '@/components/accounting/DocumentsTab';
 
 const Accounting = () => {
+  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+
+  const handleAddExpense = () => {
+    setShowAddExpenseModal(true);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       <div className="container mx-auto p-8">
@@ -180,7 +186,7 @@ const Accounting = () => {
             </TabsContent>
 
             <TabsContent value="expenses">
-              <ExpensesTab />
+              <ExpensesTab onAddExpense={handleAddExpense} />
             </TabsContent>
 
             <TabsContent value="documents">
@@ -197,6 +203,38 @@ const Accounting = () => {
             </TabsContent>
           </Tabs>
         </div>
+
+        {/* Add Expense Modal */}
+        {showAddExpenseModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-lg">
+              <div className="p-4 border-b">
+                <h3 className="text-lg font-medium">Record New Expense</h3>
+              </div>
+              <div className="p-6">
+                <p className="text-gray-600">Expense recording form would go here...</p>
+              </div>
+              <div className="p-4 border-t bg-gray-50 flex justify-end">
+                <button 
+                  onClick={() => setShowAddExpenseModal(false)}
+                  className="bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors mr-2"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={() => {
+                    setShowAddExpenseModal(false);
+                    // Handle expense creation
+                    alert('Expense recorded successfully!');
+                  }}
+                  className="bg-gradient-to-r from-mokm-orange-500 via-mokm-pink-500 to-mokm-purple-500 text-white px-4 py-2 rounded-lg hover:shadow-colored-lg transition-all duration-300"
+                >
+                  Record Expense
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
