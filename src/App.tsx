@@ -22,6 +22,7 @@ import Payment from "./pages/Payment";
 import ThankYou from "./pages/ThankYou";
 import Company from "./pages/Company";
 import Clients from "./pages/Clients";
+import Quotations from "./pages/Quotations";
 import AcceptInvitation from "./pages/AcceptInvitation";
 import NotFound from "./pages/NotFound";
 
@@ -70,6 +71,14 @@ const App = () => (
               element={
                 <AccessGuard>
                   <Clients />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/quotations" 
+              element={
+                <AccessGuard>
+                  <Quotations />
                 </AccessGuard>
               } 
             />
