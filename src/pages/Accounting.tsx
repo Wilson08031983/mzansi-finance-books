@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calculator, Receipt, FileText, TrendingUp, DollarSign, CreditCard } from 'lucide-react';
+import { Calculator, Receipt, FileText, TrendingUp, DollarSign, CreditCard, ChevronLeft } from 'lucide-react';
 import ExpensesTab from '@/components/accounting/ExpensesTab';
 import DocumentsTab from '@/components/accounting/DocumentsTab';
 
@@ -16,6 +17,14 @@ const Accounting = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       <div className="container mx-auto p-8">
+        {/* Back to Dashboard Button */}
+        <Link 
+          to="/dashboard"
+          className="inline-flex items-center mb-6 px-4 py-2 text-sm font-medium text-slate-700 bg-white rounded-lg border border-slate-200 shadow-sm hover:bg-slate-50 transition-colors hover:text-mokm-purple-600 animate-fade-in">
+          <ChevronLeft className="mr-1 h-4 w-4" />
+          Back to Dashboard
+        </Link>
+        
         {/* Header */}
         <div className="mb-8 animate-fade-in">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-mokm-orange-600 via-mokm-pink-600 to-mokm-purple-600 bg-clip-text text-transparent mb-4 font-sf-pro">

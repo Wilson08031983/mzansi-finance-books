@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'react-router-dom';
-import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
-import DashboardSidebarOverlay from '@/components/dashboard/DashboardSidebarOverlay';
 import InvoicesHeader from '@/components/invoices/InvoicesHeader';
 import InvoicesSummaryCards from '@/components/invoices/InvoicesSummaryCards';
 import InvoicesSearchAndFilters from '@/components/invoices/InvoicesSearchAndFilters';
@@ -11,7 +9,6 @@ import InvoicesContent from '@/components/invoices/InvoicesContent';
 import InvoicesBulkActions from '@/components/invoices/InvoicesBulkActions';
 import CreateInvoiceModal from '@/components/invoices/CreateInvoiceModal';
 import RecordPaymentModal from '@/components/invoices/RecordPaymentModal';
-import { Menu } from 'lucide-react';
 
 export type InvoiceStatus = 'draft' | 'sent' | 'viewed' | 'partial' | 'paid' | 'overdue' | 'cancelled';
 
@@ -47,7 +44,6 @@ export interface InvoiceItem {
 
 const Invoices: React.FC = () => {
   const { user } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [selectedInvoices, setSelectedInvoices] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -155,15 +151,17 @@ const Invoices: React.FC = () => {
     const dueDate = new Date(invoice.dueDate);
     
     switch (dateFilter) {
-      case 'thisMonth':
+      case 'thisMonth': {
         const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
         matchesDate = invoiceDate >= thisMonth;
         break;
-      case 'lastMonth':
+      }
+      case 'lastMonth': {
         const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
         const endLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
         matchesDate = invoiceDate >= lastMonth && invoiceDate <= endLastMonth;
         break;
+      }
       case 'overdue':
         matchesDate = dueDate < today && invoice.balance > 0;
         break;
@@ -212,22 +210,7 @@ const Invoices: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      <DashboardSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <DashboardSidebarOverlay sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      
-      <div className="lg:ml-64">
-        <div className="sticky top-0 z-40 lg:hidden">
-          <div className="flex items-center justify-between bg-white px-4 py-2 shadow-sm">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="p-2 text-slate-600 hover:text-slate-900"
-            >
-              <Menu className="h-6 w-6" />
-            </button>
-            <h1 className="text-lg font-semibold text-slate-900">Invoices</h1>
-            <div className="w-10" />
-          </div>
-        </div>
+      <div>
 
         <div className="p-4 lg:p-6 space-y-6">
           <InvoicesHeader 

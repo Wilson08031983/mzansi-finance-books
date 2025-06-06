@@ -25,9 +25,10 @@ const Login = () => {
     try {
       await signIn(formData.email, formData.password);
       navigate('/dashboard');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Login error:', error);
-      alert(error.message || 'Error signing in');
+      const errorMessage = error instanceof Error ? error.message : 'Error signing in';
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -51,8 +52,8 @@ const Login = () => {
 
         <Card className="shadow-business-xl border-0 bg-white/90 backdrop-blur-md hover-lift animate-fade-in">
           <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-business-lg animate-float">
-              <span className="text-white font-bold text-2xl drop-shadow-md">M</span>
+            <div className="mx-auto w-24 h-24 flex items-center justify-center shadow-business-lg animate-float rounded-2xl overflow-hidden bg-white">
+              <img src="/lovable-uploads/8021eb93-6e6a-421e-a8ff-bed101269a7c.png" alt="MOKMzansiBooks Logo" className="w-full h-full object-contain p-2" />
             </div>
             <div>
               <CardTitle className="text-2xl font-bold text-gray-900 drop-shadow-sm">Welcome Back</CardTitle>

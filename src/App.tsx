@@ -32,6 +32,8 @@ import HRManagement from "./pages/HRManagement";
 import Accounting from "./pages/Accounting";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
+import Reports from './pages/Reports';
+import Inventory from './pages/Inventory';
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -152,6 +154,30 @@ const App = () => (
               element={
                 <AccessGuard>
                   <InvoiceDetail />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/reports" 
+              element={
+                <AccessGuard>
+                  <Reports />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/inventory" 
+              element={
+                <AccessGuard>
+                  <Inventory />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/settings" 
+              element={
+                <AccessGuard>
+                  <Settings />
                 </AccessGuard>
               } 
             />

@@ -7,27 +7,16 @@ import { ArrowLeft } from 'lucide-react';
 import CompanyDetails from '@/components/company/CompanyDetails';
 import TeamManagement from '@/components/company/TeamManagement';
 import ActivityLog from '@/components/company/ActivityLog';
-import Clients from './Clients';
 
 const Company = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Determine active tab based on current route
-  const getActiveTab = () => {
-    if (location.pathname === '/clients') return 'clients';
-    return 'company-details';
-  };
-
-  const [activeTab, setActiveTab] = useState(getActiveTab());
+  const [activeTab, setActiveTab] = useState('company-details');
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
-    if (value === 'clients') {
-      navigate('/clients');
-    } else {
-      navigate('/company');
-    }
+    navigate('/company');
   };
 
   return (
@@ -53,7 +42,7 @@ const Company = () => {
                 My Company
               </h1>
               <p className="text-slate-600 text-lg font-sf-pro mt-2">
-                Manage your company details, team, clients, and view activity logs
+                Manage your company details, team and view activity logs
               </p>
             </div>
           </div>
@@ -73,12 +62,6 @@ const Company = () => {
               Company Details
             </TabsTrigger>
             <TabsTrigger 
-              value="clients"
-              className="font-sf-pro data-[state=active]:bg-gradient-to-r data-[state=active]:from-mokm-blue-500 data-[state=active]:to-mokm-purple-500 data-[state=active]:text-white data-[state=active]:shadow-colored rounded-xl transition-all duration-300"
-            >
-              Clients
-            </TabsTrigger>
-            <TabsTrigger 
               value="team-management"
               className="font-sf-pro data-[state=active]:bg-gradient-to-r data-[state=active]:from-mokm-purple-500 data-[state=active]:to-mokm-blue-500 data-[state=active]:text-white data-[state=active]:shadow-colored rounded-xl transition-all duration-300"
             >
@@ -94,10 +77,6 @@ const Company = () => {
           
           <TabsContent value="company-details" className="animate-fade-in">
             <CompanyDetails />
-          </TabsContent>
-          
-          <TabsContent value="clients" className="animate-fade-in">
-            <Clients />
           </TabsContent>
           
           <TabsContent value="team-management" className="animate-fade-in">

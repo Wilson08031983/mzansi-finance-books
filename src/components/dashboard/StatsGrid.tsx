@@ -27,7 +27,7 @@ const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
               <div className="flex-1">
                 <p className="text-sm font-medium text-slate-600 font-sf-pro">{stat.name}</p>
                 <div className="mt-3">
-                  <p className={`${stat.name === 'Total Revenue' ? 'text-2xl' : 'text-3xl'} font-bold text-slate-900 font-sf-pro`}>
+                  <p className={`${stat.name === 'Total Revenue' ? 'text-base' : 'text-lg'} font-bold text-slate-900 font-sf-pro truncate`}>
                     {stat.value}
                   </p>
                 </div>
