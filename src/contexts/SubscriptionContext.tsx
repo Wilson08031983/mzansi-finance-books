@@ -105,10 +105,10 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ chil
         return;
       }
       
-      // Get user's company ID
+      // Get user's company ID and email
       const { data: profile } = await supabase
         .from('profiles')
-        .select('company_id')
+        .select('company_id, email')
         .eq('id', user.id)
         .single();
         
@@ -118,6 +118,13 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ chil
         return;
       }
       
+      // Get company details including email
+      const { data: company } = await supabase
+        .from('companies')
+        .select('name, email')
+        .eq('id', profile.company_id)
+        .single();
+        
       // Create trial subscription
       const { data, error } = await supabase
         .from('subscriptions')
@@ -142,6 +149,26 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ chil
       }
       
       setSubscription(data as Subscription);
+      
+      // Send trial start email notification to company email (or user email as fallback)
+      const notificationEmail = company?.email || profile.email;
+      if (notificationEmail) {
+        // Call the subscription-emails edge function
+        fetch(`https://oymlikmotraabukjqkkx.functions.supabase.co/subscription-emails`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+          },
+          body: JSON.stringify({
+            type: 'trial_start',
+            email: notificationEmail,
+            company_name: company?.name || 'Your Company',
+            days: 30
+          })
+        }).catch(err => console.error('Error sending trial start email notification:', err));
+      }
+      
       toast.success('Your 30-day free trial has started!');
       navigate('/dashboard');
     } catch (error) {
@@ -179,10 +206,10 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ chil
         return;
       }
       
-      // Get company name
+      // Get company name and email
       const { data: company } = await supabase
         .from('companies')
-        .select('name')
+        .select('name, email')
         .eq('id', profile.company_id)
         .single();
       
@@ -225,8 +252,9 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ chil
       
       setSubscription(data as Subscription);
       
-      // Send success email
-      if (profile.email) {
+      // Send success email to company email (or user email as fallback)
+      const notificationEmail = company?.email || profile.email;
+      if (notificationEmail) {
         // Call the subscription-emails edge function
         fetch(`https://oymlikmotraabukjqkkx.functions.supabase.co/subscription-emails`, {
           method: 'POST',
@@ -236,7 +264,7 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ chil
           },
           body: JSON.stringify({
             type: 'payment_success',
-            email: profile.email,
+            email: notificationEmail,
             company_name: company?.name || 'Your Company',
             subscription_type: plan === 'monthly' ? 'Monthly' : 'Annual'
           })
