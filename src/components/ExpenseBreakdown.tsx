@@ -1,11 +1,13 @@
 
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { useNavigate } from 'react-router-dom';
+import { useDashboardData } from '@/hooks/useDashboardData';
 
 interface ExpenseBreakdownProps {
   data: { label: string; value: number }[];
+  onViewDetails?: () => void;
 }
 
 const MOKM_COLORS = [
@@ -24,18 +26,83 @@ const chartConfig = {
   other: { label: "Other", color: "#06b6d4" },
 };
 
-const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ data }) => {
-  const total = data.reduce((sum, item) => sum + item.value, 0);
+const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ data, onViewDetails }) => {
+  const navigate = useNavigate();
+  const { expenses } = useDashboardData();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
+  const [categoryData, setCategoryData] = useState(data);
+  const [periodFilter, setPeriodFilter] = useState('month');
+  
+  // Calculate total from active data
+  const total = categoryData.reduce((sum, item) => sum + item.value, 0);
+  
+  useEffect(() => {
+    // In a real app, we would filter expenses by period and process them
+    // For now, just use the data prop but simulate filtering
+    if (periodFilter === 'month') {
+      setCategoryData(data);
+    } else if (periodFilter === 'quarter') {
+      // Simulate quarterly data by increasing values
+      setCategoryData(data.map(item => ({
+        label: item.label,
+        value: item.value * 3 + (Math.random() * 5000)
+      })));
+    } else {
+      // Simulate yearly data
+      setCategoryData(data.map(item => ({
+        label: item.label,
+        value: item.value * 12 + (Math.random() * 15000)
+      })));
+    }
+  }, [data, periodFilter, expenses]);
+  
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category === selectedCategory ? null : category);
+  };
+  
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails();
+    } else {
+      navigate('/accounting/expenses');
+    }
+  };
 
   return (
-    <Card className="glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business hover:shadow-business-lg transition-all duration-300 animate-fade-in h-full flex flex-col">
-      <CardHeader className="pb-6">
-        <CardTitle className="text-slate-900 font-sf-pro text-xl">Expenses by Category</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-1 flex flex-col">
+    <div className="h-full w-full flex flex-col">
+      <div className="flex justify-end mb-3">
+        <div className="flex space-x-2">
+          <button 
+            onClick={() => setPeriodFilter('month')} 
+            className={`px-3 py-1 text-xs rounded-full transition-all ${periodFilter === 'month' 
+              ? 'bg-gradient-to-r from-mokm-orange-500 to-mokm-pink-500 text-white' 
+              : 'bg-white/50 text-slate-600'}`}
+          >
+            Month
+          </button>
+          <button 
+            onClick={() => setPeriodFilter('quarter')} 
+            className={`px-3 py-1 text-xs rounded-full transition-all ${periodFilter === 'quarter' 
+              ? 'bg-gradient-to-r from-mokm-orange-500 to-mokm-pink-500 text-white' 
+              : 'bg-white/50 text-slate-600'}`}
+          >
+            Quarter
+          </button>
+          <button 
+            onClick={() => setPeriodFilter('year')} 
+            className={`px-3 py-1 text-xs rounded-full transition-all ${periodFilter === 'year' 
+              ? 'bg-gradient-to-r from-mokm-orange-500 to-mokm-pink-500 text-white' 
+              : 'bg-white/50 text-slate-600'}`}
+          >
+            Year
+          </button>
+        </div>
+      </div>
+      <div className="flex-1 flex flex-col">
         <div className="flex-1 flex flex-col">
           <ChartContainer config={chartConfig}>
-            <ResponsiveContainer width="100%" height={240}>
+            <ResponsiveContainer width="100%" height={170}>
               <PieChart>
                 <defs>
                   {MOKM_COLORS.map((color, index) => (
@@ -46,21 +113,22 @@ const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ data }) => {
                   ))}
                 </defs>
                 <Pie
-                  data={data}
+                  data={categoryData}
                   cx="50%"
                   cy="50%"
-                  outerRadius={90}
+                  outerRadius={70}
                   innerRadius={30}
                   dataKey="value"
                   className="focus:outline-none"
+                  onClick={(data) => handleCategoryClick(data.payload.label)}
                 >
-                  {data.map((entry, index) => (
+                  {categoryData.map((entry, index) => (
                     <Cell 
                       key={`cell-${index}`} 
                       fill={`url(#gradient${index})`}
-                      className="hover:opacity-80 transition-opacity duration-300 cursor-pointer"
-                      stroke="rgba(255,255,255,0.2)"
-                      strokeWidth={2}
+                      className={`transition-opacity duration-300 cursor-pointer ${selectedCategory === entry.label ? 'opacity-100 stroke-2' : 'hover:opacity-80'}`}
+                      stroke={selectedCategory === entry.label ? "white" : "rgba(255,255,255,0.2)"}
+                      strokeWidth={selectedCategory === entry.label ? 3 : 2}
                     />
                   ))}
                 </Pie>
@@ -85,28 +153,40 @@ const ExpenseBreakdown: React.FC<ExpenseBreakdownProps> = ({ data }) => {
               </PieChart>
             </ResponsiveContainer>
           </ChartContainer>
-          <div className="mt-6 space-y-3">
-            {data.map((item, index) => (
-              <div key={item.label} className="flex items-center justify-between text-sm glass backdrop-blur-sm bg-white/30 rounded-xl p-3 hover:bg-white/40 transition-all duration-300">
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {categoryData.map((category, index) => (
+              <div 
+                key={index}
+                className={`flex items-center justify-between text-sm rounded-lg p-2 transition-all duration-300 cursor-pointer
+                  ${index === activeIndex ? 'bg-white/30' : 'bg-white/20 hover:bg-white/30'}`}
+                onMouseEnter={() => setActiveIndex(index)}
+                onMouseLeave={() => setActiveIndex(-1)}
+              >
                 <div className="flex items-center">
                   <div 
-                    className="w-4 h-4 rounded-full mr-3 shadow-sm" 
+                    className="w-3 h-3 rounded-full mr-2 transition-transform duration-300 "
                     style={{ backgroundColor: MOKM_COLORS[index % MOKM_COLORS.length] }}
-                  />
-                  <span className="text-slate-700 font-medium font-sf-pro">{item.label}</span>
+                  ></div>
+                  <span className="font-medium text-xs text-slate-700">{category.label}</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span className="font-semibold text-slate-900 font-sf-pro">R {item.value.toLocaleString()}</span>
-                  <span className="text-xs text-slate-500 font-sf-pro">
-                    {((item.value / total) * 100).toFixed(1)}%
-                  </span>
+                <div className="flex flex-col items-end">
+                  <span className="font-semibold text-xs text-slate-800">R {category.value.toLocaleString()}</span>
+                  <span className="text-xs text-slate-500">{((category.value / total) * 100).toFixed(1)}%</span>
                 </div>
               </div>
             ))}
           </div>
+          <div className="mt-6 flex justify-end">
+            <button
+              onClick={handleViewDetails}
+              className="px-4 py-2 text-xs font-medium rounded-lg text-mokm-orange-600 hover:text-mokm-orange-700 hover:scale-105 bg-mokm-orange-50 hover:bg-mokm-orange-100 transition-all duration-300 font-sf-pro"
+            >
+              View Expense Details
+            </button>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

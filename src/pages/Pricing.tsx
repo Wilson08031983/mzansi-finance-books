@@ -1,12 +1,33 @@
 
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { Check } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Check, Loader2 } from 'lucide-react';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 import { SUBSCRIPTION_PLANS, formatPrice } from '@/lib/paystack';
 
 const Pricing = () => {
+  const { startTrial, startSubscription, subscription, isLoading: subscriptionLoading } = useSubscription();
+  const navigate = useNavigate();
+  const [isProcessing, setIsProcessing] = useState<{[key: string]: boolean}>({});
+  
+  const handleSubscription = async (plan: 'trial' | 'monthly' | 'annual') => {
+    setIsProcessing(prev => ({ ...prev, [plan]: true }));
+    
+    try {
+      if (plan === 'trial') {
+        await startTrial();
+      } else {
+        await startSubscription(plan as 'monthly' | 'annual');
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+    } finally {
+      setIsProcessing(prev => ({ ...prev, [plan]: false }));
+    }
+  };
   return (
     <div className="min-h-screen">
       <Header />
@@ -68,17 +89,28 @@ const Pricing = () => {
                     ))}
                   </ul>
 
-                  <Link to="/payment">
-                    <Button
-                      className={`w-full h-12 font-semibold transition-all duration-300 ${
-                        key === 'monthly'
-                          ? 'bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white'
-                          : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                      }`}
-                    >
-                      Get Started
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={() => handleSubscription(key as 'trial' | 'monthly' | 'annual')}
+                    disabled={isProcessing[key] || subscriptionLoading || 
+                      (subscription?.status === 'expired' && subscription?.plan_type === 'trial' && key === 'trial')}
+                    className={`w-full h-12 font-semibold transition-all duration-300 ${
+                      key === 'monthly'
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    }`}
+                  >
+                    {isProcessing[key] ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Processing...
+                      </>
+                    ) : key === 'trial' ? (
+                      subscription?.plan_type === 'trial' && subscription?.status === 'expired' ?
+                      'Trial Expired' : 'Start Free Trial'
+                    ) : (
+                      'Subscribe Now'
+                    )}
+                  </Button>
                 </div>
               ))}
             </div>

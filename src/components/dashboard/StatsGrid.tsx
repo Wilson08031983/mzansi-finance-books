@@ -21,13 +21,13 @@ const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
       {stats.map((stat, index) => (
-        <Card key={index} className={`glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business hover:shadow-business-lg transition-all duration-500 hover-lift animate-fade-in delay-${index * 100} group`}>
-          <CardContent className="p-8">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
+        <Card key={index} className={`glass backdrop-blur-sm bg-white/50 border border-white/20 shadow-business hover:shadow-business-lg transition-all duration-500 hover-lift animate-fade-in delay-${index * 100} group overflow-hidden`}>
+          <CardContent className="p-4 overflow-hidden">
+            <div className="flex items-center justify-between" style={{ width: '100%' }}>
+              <div style={{ width: 'calc(100% - 50px)' }}>
                 <p className="text-sm font-medium text-slate-600 font-sf-pro">{stat.name}</p>
                 <div className="mt-3">
-                  <p className={`${stat.name === 'Total Revenue' ? 'text-2xl' : 'text-3xl'} font-bold text-slate-900 font-sf-pro`}>
+                  <p className={`${stat.name === 'Total Revenue' ? 'text-xl' : 'text-2xl'} font-bold text-slate-900 font-sf-pro`}>
                     {stat.value}
                   </p>
                 </div>
@@ -42,8 +42,8 @@ const StatsGrid: React.FC<StatsGridProps> = ({ stats }) => {
                   </p>
                 )}
               </div>
-              <div className={`p-4 rounded-2xl bg-gradient-to-r ${stat.bgGradient} shadow-colored group-hover:shadow-colored-lg transition-all duration-300 group-hover:scale-110`}>
-                <stat.icon className="h-7 w-7 text-white" />
+              <div className={`flex-shrink-0 rounded-xl bg-gradient-to-r ${stat.bgGradient} shadow-md`} style={{ width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <stat.icon className="h-6 w-6 text-white" />
               </div>
             </div>
           </CardContent>

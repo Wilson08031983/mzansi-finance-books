@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calculator, Receipt, FileText, TrendingUp, DollarSign, CreditCard } from 'lucide-react';
+import { Calculator, Receipt, FileText, TrendingUp, DollarSign, CreditCard, ArrowLeft } from 'lucide-react';
 import ExpensesTab from '@/components/accounting/ExpensesTab';
 import DocumentsTab from '@/components/accounting/DocumentsTab';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const Accounting = () => {
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
@@ -18,12 +20,21 @@ const Accounting = () => {
       <div className="container mx-auto p-8">
         {/* Header */}
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-mokm-orange-600 via-mokm-pink-600 to-mokm-purple-600 bg-clip-text text-transparent mb-4 font-sf-pro">
-            Accounting & Finance
-          </h1>
-          <p className="text-xl text-slate-600 font-sf-pro">
-            Manage your business finances, expenses, and financial documents
-          </p>
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-mokm-orange-600 via-mokm-pink-600 to-mokm-purple-600 bg-clip-text text-transparent mb-4 font-sf-pro">
+                Accounting & Finance
+              </h1>
+              <p className="text-xl text-slate-600 font-sf-pro">
+                Manage your business finances, expenses, and financial documents
+              </p>
+            </div>
+            <Link to="/dashboard">
+              <Button variant="outline" className="flex items-center gap-2 hover:bg-slate-100 shadow-business hover:shadow-business-lg transition-all duration-300">
+                <ArrowLeft className="h-4 w-4" /> Back to Dashboard
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Overview Cards */}

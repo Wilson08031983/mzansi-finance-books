@@ -1,0 +1,427 @@
+import { useState, useEffect } from 'react';
+import { 
+  DollarSign, 
+  Users, 
+  FileText, 
+  TrendingUp
+} from 'lucide-react';
+import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
+import DashboardHeader from '@/components/dashboard/DashboardHeader';
+import DashboardBackground from '@/components/dashboard/DashboardBackground';
+import DashboardLoadingScreen from '@/components/dashboard/DashboardLoadingScreen';
+import DashboardSidebarOverlay from '@/components/dashboard/DashboardSidebarOverlay';
+import DashboardContent from '@/components/dashboard/DashboardContent';
+import { useDashboardData } from '@/hooks/useDashboardData';
+import { formatCurrency, formatNumber, formatDate } from '@/utils/formatters';
+
+// Define TypeScript types
+type StatItem = {
+  name: string;
+  value?: string;
+  change?: string;
+  trend?: 'up' | 'down';
+  icon: React.ElementType;
+  color: string;
+  bgGradient: string;
+};
+
+type ActivityItem = {
+  id: number | string;
+  type: 'client' | 'quotation' | 'invoice' | 'user';
+  action: string;
+  subject: string;
+  date: string;
+  user: string;
+};
+
+type TaskItem = {
+  id: number | string;
+  title: string;
+  dueDate: string;
+  priority: 'high' | 'medium' | 'low';
+};
+
+const Dashboard = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [period, setPeriod] = useState('month');
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+
+  // Get data from our custom hook
+  const { invoices, expenses, clients, quotations, loading } = useDashboardData();
+
+  // State for computed data
+  const [stats, setStats] = useState<StatItem[]>([]);
+  const [activities, setActivities] = useState<ActivityItem[]>([]);
+  const [tasks, setTasks] = useState<TaskItem[]>([]);
+  const [revenueData, setRevenueData] = useState<{ label: string; value: number }[]>([]);
+  const [expensesByCategory, setExpensesByCategory] = useState<{ label: string; value: number }[]>([]);
+  const [notifications, setNotifications] = useState<{id: string; title: string; message: string; date: string; read: boolean}[]>([]);
+
+  // Process data when dependencies change
+  useEffect(() => {
+    if (!loading) {
+      // Calculate stats from real data
+      const totalRevenue = invoices
+        .filter(invoice => invoice.status === 'paid')
+        .reduce((sum, invoice) => sum + invoice.total, 0);
+        
+      const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+      
+      const clientCount = clients.length;
+      const quotationCount = quotations.length;
+      
+      // Set stats with real values and MOKMzansiBooks brand colors
+      setStats([
+        { 
+          name: 'Total Revenue', 
+          value: formatCurrency(totalRevenue), 
+          change: '+8.2%', 
+          trend: 'up', 
+          icon: DollarSign, 
+          color: 'text-mokm-orange-600',
+          bgGradient: 'from-mokm-orange-500 to-mokm-pink-500'
+        },
+        { 
+          name: 'Active Clients', 
+          value: formatNumber(clientCount), 
+          change: '+12', 
+          trend: 'up', 
+          icon: Users, 
+          color: 'text-mokm-blue-600',
+          bgGradient: 'from-mokm-blue-500 to-mokm-purple-500'
+        },
+        { 
+          name: 'Pending Invoices', 
+          value: formatNumber(invoices.filter(i => i.status === 'sent').length), 
+          change: formatCurrency(invoices.filter(i => i.status === 'sent').reduce((sum, i) => sum + i.total, 0)), 
+          trend: 'up', 
+          icon: FileText, 
+          color: 'text-mokm-purple-600',
+          bgGradient: 'from-mokm-purple-500 to-mokm-pink-500'
+        },
+        { 
+          name: 'Monthly Growth', 
+          value: '12.5%', 
+          change: '+2.1%', 
+          trend: 'up', 
+          icon: TrendingUp, 
+          color: 'text-mokm-pink-600',
+          bgGradient: 'from-mokm-pink-500 to-mokm-orange-500'
+        }
+      ]);
+
+      // Generate recent activities
+      const recentInvoices = invoices.slice(0, 2).map(invoice => ({
+        id: invoice.id,
+        type: 'invoice' as const,
+        action: 'created invoice',
+        subject: `${invoice.invoiceNumber} for ${invoice.clientName}`,
+        date: formatDate(invoice.createdAt),
+        user: 'You'
+      }));
+      
+      const recentClients = clients.slice(0, 2).map(client => ({
+        id: client.id,
+        type: 'client' as const,
+        action: 'added client',
+        subject: client.name,
+        date: formatDate(client.createdAt),
+        user: 'You'
+      }));
+      
+      setActivities([...recentInvoices, ...recentClients]);
+
+      // Generate tasks from overdue invoices
+      const overdueTasks = invoices
+        .filter(invoice => invoice.status === 'sent')
+        .map(invoice => ({
+          id: invoice.id,
+          title: `Follow up on ${invoice.invoiceNumber} - ${invoice.clientName}`,
+          dueDate: formatDate(invoice.dueDate),
+          priority: 'high' as const
+        }));
+        
+      setTasks(overdueTasks);
+
+      // Generate revenue chart data
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+      const revenueByMonth = months.map(month => ({
+        label: month,
+        value: Math.floor(Math.random() * 50000) + 10000
+      }));
+      setRevenueData(revenueByMonth);
+
+      // Generate expense breakdown
+      const categories = [
+        { label: 'Office', value: 12000 },
+        { label: 'Travel', value: 8500 },
+        { label: 'Meals', value: 4200 },
+        { label: 'Software', value: 6800 },
+        { label: 'Other', value: 3500 }
+      ];
+      setExpensesByCategory(categories);
+
+      // Generate notifications
+      setNotifications([
+        {
+          id: '1',
+          title: 'New invoice payment',
+          message: 'Payment received for INV-001',
+          date: formatDate(new Date().toISOString()),
+          read: false
+        },
+        {
+          id: '2',
+          title: 'Quotation viewed',
+          message: 'ABC Corp viewed your quotation',
+          date: formatDate(new Date(Date.now() - 86400000).toISOString()),
+          read: true
+        }
+      ]);
+    }
+  }, [loading, invoices, expenses, clients, quotations, period]);
+
+  if (loading) {
+    return <DashboardLoadingScreen />;
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex relative overflow-hidden">
+      {/* Animated Pulsating Balls Background */}
+      <DashboardBackground />
+
+      {/* Sidebar */}
+      <DashboardSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+      {/* Main Content */}
+      <div className="flex-1 lg:ml-0 relative z-10">
+        {/* Header */}
+        <DashboardHeader 
+          setSidebarOpen={setSidebarOpen}
+          notificationsOpen={notificationsOpen}
+          setNotificationsOpen={setNotificationsOpen}
+          notifications={notifications}
+          setNotifications={setNotifications}
+        />
+
+        {/* Dashboard Content */}
+        <DashboardContent 
+          period={period}
+          setPeriod={setPeriod}
+          stats={stats}
+          activities={activities}
+          tasks={tasks}
+          revenueData={revenueData}
+          expensesByCategory={expensesByCategory}
+        />
+                src="/lovable-uploads/8021eb93-6e6a-421e-a8ff-bed101269a7c.png" 
+                alt="MOKMzansiBooks" 
+                className="h-8 w-auto mr-2" 
+              />
+            )}
+            {sidebarOpen && <span className="text-lg font-semibold">MOKMzansiBooks</span>}
+          </div>
+          <Button variant="ghost" size="icon" onClick={toggleSidebar} className="glass-button">
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </Button>
+        </div>
+        
+        <div className="flex-1 overflow-y-auto p-4 sequoia-fade-in">
+          <nav className="space-y-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`flex items-center px-3 py-2 rounded-md text-sm font-medium ${item.current 
+                  ? "bg-blue-600/10 text-blue-600" 
+                  : "text-gray-700 hover:bg-blue-600/5 hover:text-blue-600"} ${!sidebarOpen ? "justify-center" : ""} glass-item`}
+              >
+                <item.icon size={20} className={sidebarOpen ? "mr-3" : ""} />
+                {sidebarOpen && <span>{item.name}</span>}
+              </Link>
+            ))}
+          </nav>
+        </div>
+        
+        <div className="p-4 border-t border-gray-200/30">
+          <Button 
+            variant="ghost" 
+            className="w-full flex items-center justify-center glass-button text-red-600 hover:bg-red-600/10"
+            onClick={() => navigate("/logout")}
+          >
+            <LogOut size={20} className={sidebarOpen ? "mr-2" : ""} />
+            {sidebarOpen && <span>Logout</span>}
+          </Button>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className={`flex-1 ${sidebarOpen ? "ml-64" : "ml-20"} transition-all duration-300 ease-in-out`}>
+        {/* Header with glass UI */}
+        <header className="sticky top-0 z-40 bg-white/70 backdrop-blur-md sequoia-bg glass-header border-b border-gray-200/30 shadow-sm">
+          <div className="h-16 flex items-center justify-between px-6">
+            <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
+            <div className="flex items-center space-x-4">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleRefresh}
+                className="glass-button"
+              >
+                <RefreshCw size={16} className="mr-2" />
+                Refresh
+              </Button>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon" className="glass-button relative">
+                    <Bell size={18} />
+                    <span className="absolute top-1 right-1.5 h-2 w-2 rounded-full bg-red-600"></span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-80 sequoia-bg glass-dropdown">
+                  <div className="p-4">
+                    <h3 className="text-lg font-medium">Notifications</h3>
+                    <p className="text-sm text-gray-500 mt-1">You have 3 unread notifications</p>
+                  </div>
+                  <div className="border-t border-gray-200/30 py-2">
+                    <DropdownMenuItem className="py-2 px-4 focus:bg-blue-600/10">
+                      <div className="flex flex-col">
+                        <span className="font-medium">New invoice paid</span>
+                        <span className="text-sm text-gray-500">2 minutes ago</span>
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="py-2 px-4 focus:bg-blue-600/10">
+                      <div className="flex flex-col">
+                        <span className="font-medium">New client registered</span>
+                        <span className="text-sm text-gray-500">1 hour ago</span>
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="py-2 px-4 focus:bg-blue-600/10">
+                      <div className="flex flex-col">
+                        <span className="font-medium">Server update completed</span>
+                        <span className="text-sm text-gray-500">Yesterday</span>
+                      </div>
+                    </DropdownMenuItem>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </header>
+
+        {/* Main dashboard content */}
+        <main className="p-6 overflow-y-auto" style={{ height: "calc(100vh - 4rem)" }}>
+          {/* Stats overview */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {stats.map((stat) => (
+              <Card key={stat.id} className="sequoia-bg glass-card border-0 shadow-sm overflow-hidden">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-gray-800">{stat.name}</CardTitle>
+                    <stat.icon className="h-5 w-5 text-gray-600" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-gray-800">{stat.value}</div>
+                  <div className="flex items-center mt-1">
+                    <span className={`
+                      text-sm font-medium
+                      ${stat.trend === "up" ? "text-green-600" : ""}
+                      ${stat.trend === "down" ? "text-red-600" : ""}
+                      ${stat.trend === "neutral" ? "text-gray-600" : ""}
+                    `}>
+                      {stat.change} from last month
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          {/* Placeholder for charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <Card className="sequoia-bg glass-card border-0 shadow-sm overflow-hidden">
+              <CardHeader>
+                <CardTitle>Revenue Overview</CardTitle>
+              </CardHeader>
+              <CardContent className="h-80 flex items-center justify-center">
+                <div className="text-gray-500">Revenue chart will be displayed here</div>
+              </CardContent>
+            </Card>
+            
+            <Card className="sequoia-bg glass-card border-0 shadow-sm overflow-hidden">
+              <CardHeader>
+                <CardTitle>Expense Breakdown</CardTitle>
+              </CardHeader>
+              <CardContent className="h-80 flex items-center justify-center">
+                <div className="text-gray-500">Expense chart will be displayed here</div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          {/* Placeholder for recent activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="sequoia-bg glass-card border-0 shadow-sm overflow-hidden">
+              <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="border-b border-gray-200/30 pb-4">
+                    <div className="font-medium">New invoice created</div>
+                    <div className="text-sm text-gray-500">Client: ABC Corporation</div>
+                    <div className="text-sm text-gray-400">Today, 14:35</div>
+                  </div>
+                  <div className="border-b border-gray-200/30 pb-4">
+                    <div className="font-medium">Payment received</div>
+                    <div className="text-sm text-gray-500">Client: XYZ Ltd</div>
+                    <div className="text-sm text-gray-400">Today, 11:20</div>
+                  </div>
+                  <div>
+                    <div className="font-medium">New client added</div>
+                    <div className="text-sm text-gray-500">Client: Tech Solutions SA</div>
+                    <div className="text-sm text-gray-400">Yesterday, 16:45</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="sequoia-bg glass-card border-0 shadow-sm overflow-hidden">
+              <CardHeader>
+                <CardTitle>Upcoming Tasks</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-gray-200/30 pb-4">
+                    <div>
+                      <div className="font-medium">Send invoice to Big Corp</div>
+                      <div className="text-sm text-gray-500">Due tomorrow</div>
+                    </div>
+                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">High</span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-gray-200/30 pb-4">
+                    <div>
+                      <div className="font-medium">Client meeting</div>
+                      <div className="text-sm text-gray-500">June 7, 2025</div>
+                    </div>
+                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Medium</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium">Update inventory records</div>
+                      <div className="text-sm text-gray-500">June 10, 2025</div>
+                    </div>
+                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Low</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

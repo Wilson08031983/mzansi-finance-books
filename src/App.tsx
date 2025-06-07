@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import AccessGuard from "@/components/AccessGuard";
 import Index from "./pages/Index";
 import Pricing from "./pages/Pricing";
@@ -32,6 +33,8 @@ import HRManagement from "./pages/HRManagement";
 import Accounting from "./pages/Accounting";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
+import Reports from './pages/Reports';
+import Inventory from './pages/Inventory';
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -44,6 +47,7 @@ const App = () => (
       <Sonner />
       <Router>
         <AuthProvider>
+          <SubscriptionProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
@@ -58,6 +62,11 @@ const App = () => (
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/settings/payment" element={
+              <AccessGuard>
+                <Settings />
+              </AccessGuard>
+            } />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route 
               path="/dashboard" 
@@ -104,6 +113,22 @@ const App = () => (
               element={
                 <AccessGuard>
                   <Accounting />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/reports" 
+              element={
+                <AccessGuard>
+                  <Reports />
+                </AccessGuard>
+              } 
+            />
+            <Route 
+              path="/inventory" 
+              element={
+                <AccessGuard>
+                  <Inventory />
                 </AccessGuard>
               } 
             />
@@ -155,8 +180,17 @@ const App = () => (
                 </AccessGuard>
               } 
             />
+            <Route 
+              path="/settings" 
+              element={
+                <AccessGuard>
+                  <Settings />
+                </AccessGuard>
+              } 
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
+        </SubscriptionProvider>
         </AuthProvider>
       </Router>
     </TooltipProvider>

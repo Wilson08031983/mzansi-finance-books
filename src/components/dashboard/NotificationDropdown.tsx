@@ -33,7 +33,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
       </Button>
       
       {notificationsOpen && (
-        <div className="absolute right-0 mt-3 w-80 glass backdrop-blur-xl bg-white/90 rounded-2xl shadow-business-xl border border-white/20 z-50 animate-scale-in">
+        <div className="fixed right-8 top-20 w-80 glass backdrop-blur-xl bg-white/90 rounded-2xl shadow-business-xl border border-white/20 z-50 animate-scale-in">
           <div className="p-6 border-b border-white/10">
             <h3 className="font-bold text-slate-900 font-sf-pro">Notifications</h3>
           </div>

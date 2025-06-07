@@ -1,37 +1,43 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { FileText, Users, Plus, Receipt } from 'lucide-react';
+import { FileText, Users, Plus, Receipt, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const QuickActions = () => {
+interface QuickActionsProps {
+  onActionClick?: (action: string) => void;
+}
+
+const QuickActions: React.FC<QuickActionsProps> = ({ onActionClick }) => {
+  const navigate = useNavigate();
   const actions = [
     {
       title: 'Create Invoice',
       icon: FileText,
       bgGradient: 'from-mokm-blue-500 to-mokm-purple-500',
       hoverGradient: 'from-mokm-blue-600 to-mokm-purple-600',
-      onClick: () => console.log('Navigate to create invoice')
+      onClick: () => navigate('/invoices/new')
     },
     {
       title: 'Add Client',
       icon: Users,
       bgGradient: 'from-mokm-purple-500 to-mokm-pink-500',
       hoverGradient: 'from-mokm-purple-600 to-mokm-pink-600',
-      onClick: () => console.log('Navigate to add client')
+      onClick: () => navigate('/clients/new')
     },
     {
       title: 'New Quotation',
       icon: Plus,
       bgGradient: 'from-mokm-pink-500 to-mokm-orange-500',
       hoverGradient: 'from-mokm-pink-600 to-mokm-orange-600',
-      onClick: () => console.log('Navigate to create quotation')
+      onClick: () => navigate('/quotations/new')
     },
     {
       title: 'Record Expense',
       icon: Receipt,
       bgGradient: 'from-mokm-orange-500 to-mokm-pink-500',
       hoverGradient: 'from-mokm-orange-600 to-mokm-pink-600',
-      onClick: () => console.log('Navigate to record expense')
+      onClick: () => navigate('/accounting/expenses/new')
     }
   ];
 

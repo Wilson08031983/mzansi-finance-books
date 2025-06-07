@@ -3,6 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import original theme override */
+@import './styles/original-theme-override.css';
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -115,6 +115,73 @@ export default {
 					800: '#9a3412',
 					900: '#7c2d12',
 					950: '#431407'
+				},
+				card: {
+					DEFAULT: 'hsl(var(--card))',
+					foreground: 'hsl(var(--card-foreground))'
+				},
+				sidebar: {
+					DEFAULT: 'hsl(var(--sidebar-background))',
+					foreground: 'hsl(var(--sidebar-foreground))',
+					primary: 'hsl(var(--sidebar-primary))',
+					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+					accent: 'hsl(var(--sidebar-accent))',
+					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+					border: 'hsl(var(--sidebar-border))',
+					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// MOKMzansiBooks brand colors from logo
+				'mokm-pink': {
+					50: '#fef7ff',
+					100: '#fce7ff',
+					200: '#f8ccff',
+					300: '#f2a0ff',
+					400: '#e863ff',
+					500: '#d826ff',
+					600: '#c700e8',
+					700: '#a600c2',
+					800: '#8a009f',
+					900: '#710080',
+					950: '#4a0054'
+				},
+				'mokm-purple': {
+					50: '#faf5ff',
+					100: '#f3e8ff',
+					200: '#e9d5ff',
+					300: '#d8b4fe',
+					400: '#c084fc',
+					500: '#a855f7',
+					600: '#9333ea',
+					700: '#7c3aed',
+					800: '#6b21a8',
+					900: '#581c87',
+					950: '#3b0764'
+				},
+				'mokm-blue': {
+					50: '#f0f9ff',
+					100: '#e0f2fe',
+					200: '#bae6fd',
+					300: '#7dd3fc',
+					400: '#38bdf8',
+					500: '#0ea5e9',
+					600: '#0284c7',
+					700: '#0369a1',
+					800: '#075985',
+					900: '#0c4a6e',
+					950: '#082f49'
+				},
+				'mokm-orange': {
+					50: '#fff7ed',
+					100: '#ffedd5',
+					200: '#fed7aa',
+					300: '#fdba74',
+					400: '#fb923c',
+					500: '#f97316',
+					600: '#ea580c',
+					700: '#c2410c',
+					800: '#9a3412',
+					900: '#7c2d12',
+					950: '#431407'
 				}
 			},
 			borderRadius: {

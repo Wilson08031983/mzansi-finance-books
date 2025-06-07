@@ -92,11 +92,11 @@ const Signup = () => {
 
         <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-500 rounded-2xl flex items-center justify-center">
+            <div className="mx-auto w-24 h-24 flex items-center justify-center shadow-business-lg rounded-2xl overflow-hidden bg-white">
               {isInvitationSignup ? (
-                <UserPlus className="text-white text-2xl" />
+                <UserPlus className="text-purple-600 text-3xl" />
               ) : (
-                <span className="text-white font-bold text-2xl">M</span>
+                <img src="/lovable-uploads/8021eb93-6e6a-421e-a8ff-bed101269a7c.png" alt="MOKMzansiBooks Logo" className="w-full h-full object-contain p-2" />
               )}
             </div>
             <div>
