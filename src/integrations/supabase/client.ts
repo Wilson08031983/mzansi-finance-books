@@ -4,7 +4,7 @@ import type { Database } from './types';
 // Use environment variables to get the Supabase URL and key
 // For Vite, we need to use import.meta.env instead of process.env
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://lkspukpjchmysbbhjksz.supabase.co";
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxrc3B1a3BqY2hteXNiYmhqa3N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1NDM5ODAsImV4cCI6MjA2NTExOTk4MH0.zovX0BO_1BuN9ivQGWQwH_UB6L0ly1RhjUOD-jIEN1A";
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxrc3B1a3BqY2hteXNiYmhqa3N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1NDM5ODAsImV4cCI6MjA2NTExOTk4MH0.fYIbKPTyMv0T9chlyG4LLA7AmXRPpTrxbiQvkU6flT8";
 
 // Check if environment variables are configured properly
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
@@ -25,7 +25,7 @@ try {
   // Create a fallback client that won't crash the app but won't work properly
   supabase = createClient<Database>(
     "https://lkspukpjchmysbbhjksz.supabase.co", 
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxrc3B1a3BqY2hteXNiYmhqa3N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1NDM5ODAsImV4cCI6MjA2NTExOTk4MH0.zovX0BO_1BuN9ivQGWQwH_UB6L0ly1RhjUOD-jIEN1A"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxrc3B1a3BqY2hteXNiYmhqa3N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1NDM5ODAsImV4cCI6MjA2NTExOTk4MH0.fYIbKPTyMv0T9chlyG4LLA7AmXRPpTrxbiQvkU6flT8"
   );
 }
 
