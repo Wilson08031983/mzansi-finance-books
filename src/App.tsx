@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import AccessGuard from "@/components/AccessGuard";
+import SupabaseNavigation from "@/components/SupabaseNavigation";
 import Index from "./pages/Index";
 import Pricing from "./pages/Pricing";
 import Login from "./pages/Login";
@@ -36,6 +37,9 @@ import Reports from './pages/Reports';
 import Inventory from './pages/Inventory';
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+// Supabase test pages
+import SupabaseTest from "./pages/supabase-test";
+import SupabaseMigration from "./pages/supabase-migration";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +50,7 @@ const App = () => (
       <Sonner />
       <Router>
         <AuthProvider>
+          <SupabaseNavigation />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
@@ -181,6 +186,9 @@ const App = () => (
                 </AccessGuard>
               } 
             />
+            {/* Supabase Test Routes */}
+            <Route path="/supabase-test" element={<SupabaseTest />} />
+            <Route path="/supabase-migration" element={<SupabaseMigration />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
